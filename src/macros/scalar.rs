@@ -33,20 +33,6 @@ macro_rules! scalar {
             }
 
             #[inline]
-            pub fn take_exact(&mut self, amount: &mut Self) -> std::result::Result<(), ()> {
-                let is_valid = *self >= *amount && *amount >= Self::zero();
-
-                if is_valid {
-                    let taken = (*amount).min(*self);
-                    *self -= taken;
-                    *amount += taken;
-                    Ok(())
-                } else {
-                    Err(())
-                }
-            }
-
-            #[inline]
             pub fn give(&mut self, amount: &mut Self) {
                 *self += *amount;
                 *amount = Self::zero();
