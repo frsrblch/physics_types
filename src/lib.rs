@@ -20,24 +20,35 @@ mod accel;
 mod angle;
 mod area;
 mod credits;
+mod energy;
+mod force;
 mod length;
 mod mass;
 mod mass_rate;
 mod pixel;
 mod population;
+mod position;
+mod power;
 mod speed;
 mod temperature;
 mod time;
+
+#[cfg(test)]
+mod test;
 
 pub use accel::*;
 pub use angle::*;
 pub use area::*;
 pub use credits::*;
+pub use energy::*;
+pub use force::*;
 pub use length::*;
 pub use mass::*;
 pub use mass_rate::*;
 pub use pixel::*;
 pub use population::*;
+pub use position::*;
+pub use power::*;
 pub use speed::*;
 pub use temperature::*;
 pub use time::*;
