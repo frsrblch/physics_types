@@ -29,6 +29,8 @@ impl Angle {
     const RAD_PER_DEG: f64 = PI / 180.0;
 
     pub const TAU: Self = Angle::in_rad(TAU);
+
+    pub const PI: Self = Angle::in_rad(PI);
 }
 
 impl Distribution<Angle> for Standard {
