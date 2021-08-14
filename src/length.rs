@@ -14,6 +14,7 @@ vector_and_scalar! {
 }
 
 impl Length {
+    #[inline]
     pub fn of_orbit(mass: Mass, period: Duration) -> Self {
         const FOUR_PI_SQUARED: f64 = 4.0 * (PI * PI);
         const ONE_THIRD: f64 = 1.0 / 3.0;
@@ -30,6 +31,7 @@ impl Distance {
     ///
     /// * `angle` - as measured clockwise from the positive y-axis
     /// * `magnitude` - length of the resulting vector
+    #[inline]
     pub fn from_angle_and_radius(angle: super::Angle, magnitude: Length) -> Self {
         let x = magnitude * angle.sin();
         let y = magnitude * angle.cos();
@@ -37,19 +39,24 @@ impl Distance {
     }
 }
 
-#[test]
-fn vector_and_scalar() {
-    let len = 4.0 * M;
-    let dist = (2.0, 3.0) * M;
+#[cfg(test)]
+mod test {
+    use super::*;
 
-    assert_eq!(Length::in_m(4.0), len);
-    assert_eq!(Distance::in_m(2.0, 3.0), dist)
-}
+    #[test]
+    fn vector_and_scalar() {
+        let len = 4.0 * M;
+        let dist = (2.0, 3.0) * M;
 
-#[test]
-fn orbit_radius() {
-    // source: https://en.wikipedia.org/wiki/Orbital_period#Small_body_orbiting_a_central_body
-    let expected = Length::in_m(1.0807);
-    let actual = Length::of_orbit(crate::Mass::in_kg(100.0), Duration::in_hours(24.0));
-    assert!((expected - actual).abs().value < 0.0001);
+        assert_eq!(Length::in_m(4.0), len);
+        assert_eq!(Distance::in_m(2.0, 3.0), dist)
+    }
+
+    #[test]
+    fn orbit_radius() {
+        // source: https://en.wikipedia.org/wiki/Orbital_period#Small_body_orbiting_a_central_body
+        let expected = Length::in_m(1.0807);
+        let actual = Length::of_orbit(crate::Mass::in_kg(100.0), Duration::in_hours(24.0));
+        assert!((expected - actual).abs().value < 0.0001);
+    }
 }

@@ -60,6 +60,7 @@ pub trait Sqrt {
 
 impl Sqrt for f64 {
     type Output = f64;
+    #[inline]
     fn sqrt(self) -> Self::Output {
         self.sqrt()
     }
@@ -72,6 +73,7 @@ pub trait Squared {
 
 impl Squared for f64 {
     type Output = Self;
+    #[inline]
     fn squared(self) -> Self::Output {
         self * self
     }
@@ -88,10 +90,12 @@ trait New {
 }
 
 impl const New for f64 {
+    #[inline]
     fn new(value: f64) -> Self {
         value
     }
 
+    #[inline]
     fn value(self) -> f64 {
         self
     }

@@ -10,10 +10,12 @@ scalar! {
 }
 
 impl Area {
+    #[inline]
     pub fn in_square_km(value: f64) -> Self {
         Self::in_m2(value * 1e6)
     }
 
+    #[inline]
     pub fn of_sphere(radius: Length) -> Self {
         const FOUR_PI: f64 = 4.0 * PI;
         FOUR_PI * radius.squared()

@@ -7,10 +7,12 @@ scalar! {
 }
 
 impl MassRate {
+    #[inline]
     pub const fn in_tons_per_day(tons_per_day: f64) -> Self {
         tons_per_day * TON / DAY
     }
 
+    #[inline]
     pub fn tons_per_day(self) -> TonsPerDay {
         TonsPerDay(self)
     }
@@ -19,6 +21,7 @@ impl MassRate {
 pub struct TonsPerDay(MassRate);
 
 impl Display for TonsPerDay {
+    #[inline]
     fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
         let tons_per_day = (self.0.value / 1e3 * Duration::SECONDS_PER_DAY) as i64;
         write!(f, "{} t/day", tons_per_day.to_formatted_string(&Locale::en))

@@ -14,14 +14,17 @@ scalar! {
 }
 
 impl Angle {
+    #[inline]
     pub const fn in_deg(degrees: f64) -> Self {
         Self::new(degrees * Self::RAD_PER_DEG)
     }
 
+    #[inline]
     pub fn sin(self) -> f64 {
         self.value.sin()
     }
 
+    #[inline]
     pub fn cos(self) -> f64 {
         self.value.cos()
     }
@@ -34,6 +37,7 @@ impl Angle {
 }
 
 impl Distribution<Angle> for Standard {
+    #[inline]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Angle {
         Angle::in_rad(rng.gen_range(-PI, PI))
     }
@@ -46,6 +50,7 @@ scalar! {
 }
 
 impl AngularSpeed {
+    #[inline]
     pub fn of_orbit(mass: Mass, radius: Length) -> Self {
         let r_cubed = radius.value * radius.value * radius.value;
         Self::new((G * mass.value / r_cubed).sqrt())

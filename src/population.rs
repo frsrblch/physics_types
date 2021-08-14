@@ -5,14 +5,17 @@ pub const PERSON: Population = Population::new(1.0);
 scalar!(struct Population(f64));
 
 impl Population {
+    #[inline]
     pub const fn in_people(people: f64) -> Self {
         Self::new(people)
     }
 
+    #[inline]
     pub const fn in_millions(mm_people: f64) -> Self {
         Self::new(mm_people * 1e6)
     }
 
+    #[inline]
     pub const fn get_food_requirement(&self) -> MassRate {
         self * Self::FOOD_PER_PERSON
     }
@@ -53,33 +56,39 @@ impl Display for Population {
     }
 }
 
-#[test]
-fn population_to_string() {
-    let assert_pop = |exp: &str, pop: f64| assert_eq!(exp, Population::new(pop).to_string());
-
-    assert_pop("0", 0.0);
-    assert_pop("1", 1e0);
-    assert_pop("10", 1e1);
-    assert_pop("100", 1e2);
-    assert_pop("1000", 1e3);
-    assert_pop("10.0 k", 1e4);
-    assert_pop("100 k", 1e5);
-    assert_pop("1.00 M", 1e6);
-    assert_pop("10.0 M", 1e7);
-    assert_pop("100 M", 1e8);
-    assert_pop("1.00 B", 1e9);
-    assert_pop("10.0 B", 1e10);
-    assert_pop("100 B", 1e11);
-    assert_pop("1000 B", 1e12);
-    assert_pop("-10.0 k", -1e4);
-}
-
 scalar!(struct PopulationDensity(f64));
 
 impl PopulationDensity {
+    #[inline]
     pub const fn in_people_per_square_km(value: f64) -> Self {
         Self::new(value / 1e6)
     }
 }
 
 scalar_div! { Population | Area = PopulationDensity }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn population_to_string() {
+        let assert_pop = |exp: &str, pop: f64| assert_eq!(exp, Population::new(pop).to_string());
+
+        assert_pop("0", 0.0);
+        assert_pop("1", 1e0);
+        assert_pop("10", 1e1);
+        assert_pop("100", 1e2);
+        assert_pop("1000", 1e3);
+        assert_pop("10.0 k", 1e4);
+        assert_pop("100 k", 1e5);
+        assert_pop("1.00 M", 1e6);
+        assert_pop("10.0 M", 1e7);
+        assert_pop("100 M", 1e8);
+        assert_pop("1.00 B", 1e9);
+        assert_pop("10.0 B", 1e10);
+        assert_pop("100 B", 1e11);
+        assert_pop("1000 B", 1e12);
+        assert_pop("-10.0 k", -1e4);
+    }
+}

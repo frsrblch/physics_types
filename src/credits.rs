@@ -67,10 +67,15 @@ impl Display for Price {
     }
 }
 
-#[test]
-fn price_display() {
-    let p = Price::in_credits_per_kg(3.333333);
-    assert_eq!(&format!("{}", p), "$3.33/kg");
-}
-
 scalar_div! { CreditRatePerPerson | MassRatePerPerson = Price }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn price_display() {
+        let p = Price::in_credits_per_kg(3.333333);
+        assert_eq!(&format!("{}", p), "$3.33/kg");
+    }
+}

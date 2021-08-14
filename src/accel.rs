@@ -10,6 +10,7 @@ scalar! {
 scalar_div!(Speed | Duration = Acceleration);
 
 impl Acceleration {
+    #[inline]
     pub fn from_gravity(mass: Mass, distance: Length) -> Self {
         let g = G * mass.value / (distance.value * distance.value);
         Acceleration::in_m_per_s2(g)

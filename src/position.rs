@@ -8,6 +8,7 @@ pub struct Position {
 }
 
 impl Position {
+    #[inline]
     pub const fn in_m(x: f64, y: f64) -> Self {
         Self {
             x: Length::in_m(x),
@@ -15,6 +16,7 @@ impl Position {
         }
     }
 
+    #[inline]
     pub const fn in_ly(x: f64, y: f64) -> Self {
         Self::in_m(x * Self::M_PER_LY, y * Self::M_PER_LY)
     }
@@ -24,6 +26,7 @@ impl Position {
 
 #[rustfmt::skip]
 impl const From<Distance> for Position {
+    #[inline]
     fn from(value: Distance) -> Self {
         Self {
             x: value.x,
@@ -34,6 +37,7 @@ impl const From<Distance> for Position {
 
 impl Add<Distance> for Position {
     type Output = Position;
+    #[inline]
     fn add(self, rhs: Distance) -> Self::Output {
         Self {
             x: self.x + rhs.x,
@@ -44,6 +48,7 @@ impl Add<Distance> for Position {
 
 impl Add<&Distance> for Position {
     type Output = Position;
+    #[inline]
     fn add(self, rhs: &Distance) -> Self::Output {
         Self {
             x: self.x + rhs.x,
@@ -53,6 +58,7 @@ impl Add<&Distance> for Position {
 }
 
 impl AddAssign<Distance> for Position {
+    #[inline]
     fn add_assign(&mut self, rhs: Distance) {
         self.x += rhs.x;
         self.y += rhs.y;
@@ -60,6 +66,7 @@ impl AddAssign<Distance> for Position {
 }
 
 impl AddAssign<&Distance> for Position {
+    #[inline]
     fn add_assign(&mut self, rhs: &Distance) {
         self.x += rhs.x;
         self.y += rhs.y;
@@ -68,6 +75,7 @@ impl AddAssign<&Distance> for Position {
 
 impl Sub<Distance> for Position {
     type Output = Position;
+    #[inline]
     fn sub(self, rhs: Distance) -> Self::Output {
         Self {
             x: self.x - rhs.x,
@@ -78,6 +86,7 @@ impl Sub<Distance> for Position {
 
 impl Sub<&Distance> for Position {
     type Output = Position;
+    #[inline]
     fn sub(self, rhs: &Distance) -> Self::Output {
         Self {
             x: self.x - rhs.x,
@@ -88,6 +97,7 @@ impl Sub<&Distance> for Position {
 
 impl Sub<Distance> for &Position {
     type Output = Position;
+    #[inline]
     fn sub(self, rhs: Distance) -> Self::Output {
         Self::Output {
             x: self.x - rhs.x,
@@ -98,6 +108,7 @@ impl Sub<Distance> for &Position {
 
 impl Sub<&Distance> for &Position {
     type Output = Position;
+    #[inline]
     fn sub(self, rhs: &Distance) -> Self::Output {
         Self::Output {
             x: self.x - rhs.x,
@@ -107,6 +118,7 @@ impl Sub<&Distance> for &Position {
 }
 
 impl SubAssign<Distance> for Position {
+    #[inline]
     fn sub_assign(&mut self, rhs: Distance) {
         self.x -= rhs.x;
         self.y -= rhs.y;
@@ -114,6 +126,7 @@ impl SubAssign<Distance> for Position {
 }
 
 impl SubAssign<&Distance> for Position {
+    #[inline]
     fn sub_assign(&mut self, rhs: &Distance) {
         self.x -= rhs.x;
         self.y -= rhs.y;
@@ -122,6 +135,7 @@ impl SubAssign<&Distance> for Position {
 
 impl Sub for Position {
     type Output = Distance;
+    #[inline]
     fn sub(self, rhs: Position) -> Distance {
         Distance {
             x: self.x - rhs.x,
@@ -132,6 +146,7 @@ impl Sub for Position {
 
 impl Sub<&Position> for Position {
     type Output = Distance;
+    #[inline]
     fn sub(self, rhs: &Position) -> Distance {
         Distance {
             x: self.x - rhs.x,
@@ -142,6 +157,7 @@ impl Sub<&Position> for Position {
 
 impl Sub<Position> for &Position {
     type Output = Distance;
+    #[inline]
     fn sub(self, rhs: Position) -> Distance {
         Distance {
             x: self.x - rhs.x,
@@ -152,6 +168,7 @@ impl Sub<Position> for &Position {
 
 impl Sub<&Position> for &Position {
     type Output = Distance;
+    #[inline]
     fn sub(self, rhs: &Position) -> Distance {
         Distance {
             x: self.x - rhs.x,

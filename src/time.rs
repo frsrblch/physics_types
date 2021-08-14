@@ -21,14 +21,17 @@ pub struct TimeFloat {
 }
 
 impl TimeFloat {
+    #[inline]
     pub fn in_s(seconds: f64) -> Self {
         Self::new(seconds)
     }
 
+    #[inline]
     pub fn in_days(days: f64) -> Self {
         Self::in_s(days * Duration::SECONDS_PER_DAY)
     }
 
+    #[inline]
     fn new(value: f64) -> Self {
         Self {
             value: Duration::new(value),
@@ -38,6 +41,7 @@ impl TimeFloat {
 
 impl Div for TimeFloat {
     type Output = f64;
+    #[inline]
     fn div(self, rhs: Self) -> f64 {
         self.value / rhs.value
     }
@@ -45,6 +49,7 @@ impl Div for TimeFloat {
 
 impl Add<Duration> for TimeFloat {
     type Output = Self;
+    #[inline]
     fn add(self, rhs: Duration) -> Self {
         Self {
             value: self.value + rhs,
@@ -53,6 +58,7 @@ impl Add<Duration> for TimeFloat {
 }
 
 impl AddAssign<Duration> for TimeFloat {
+    #[inline]
     fn add_assign(&mut self, rhs: Duration) {
         self.value += rhs;
     }
@@ -60,6 +66,7 @@ impl AddAssign<Duration> for TimeFloat {
 
 impl Sub<Duration> for TimeFloat {
     type Output = Self;
+    #[inline]
     fn sub(self, rhs: Duration) -> Self {
         Self {
             value: self.value - rhs,
@@ -69,6 +76,7 @@ impl Sub<Duration> for TimeFloat {
 
 impl Sub for TimeFloat {
     type Output = Duration;
+    #[inline]
     fn sub(self, rhs: Self) -> Duration {
         self.value - rhs.value
     }
@@ -76,6 +84,7 @@ impl Sub for TimeFloat {
 
 impl Div<Duration> for TimeFloat {
     type Output = f64;
+    #[inline]
     fn div(self, rhs: Duration) -> Self::Output {
         self.value / rhs
     }
@@ -84,12 +93,14 @@ impl Div<Duration> for TimeFloat {
 impl Eq for TimeFloat {}
 
 impl PartialOrd for TimeFloat {
+    #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         self.value.partial_cmp(&other.value)
     }
 }
 
 impl Ord for TimeFloat {
+    #[inline]
     fn cmp(&self, other: &Self) -> Ordering {
         self.value.partial_cmp(&other.value).unwrap()
     }
@@ -102,14 +113,17 @@ scalar! {
 }
 
 impl Duration {
+    #[inline]
     pub const fn in_days(days: f64) -> Self {
         Self::in_s(days * Self::SECONDS_PER_DAY)
     }
 
+    #[inline]
     pub const fn in_hours(hours: f64) -> Self {
         Self::in_s(hours * Self::SECONDS_PER_HOUR)
     }
 
+    #[inline]
     pub fn days(&self) -> Days {
         Days(*self)
     }
@@ -122,6 +136,7 @@ impl Duration {
 }
 
 impl From<ChronoDuration> for Duration {
+    #[inline]
     fn from(duration: ChronoDuration) -> Self {
         let seconds = duration.num_milliseconds() as f64 / 1e3;
         Duration::in_s(seconds)
@@ -129,6 +144,7 @@ impl From<ChronoDuration> for Duration {
 }
 
 impl From<Duration> for ChronoDuration {
+    #[inline]
     fn from(duration: Duration) -> Self {
         let microseconds = (duration.value * 1e6) as i64;
         ChronoDuration::microseconds(microseconds)
@@ -136,6 +152,7 @@ impl From<Duration> for ChronoDuration {
 }
 
 impl From<Duration> for StdDuration {
+    #[inline]
     fn from(duration: Duration) -> Self {
         let microseconds = (duration.value * 1e6) as u64;
         StdDuration::from_micros(microseconds)
@@ -145,18 +162,11 @@ impl From<Duration> for StdDuration {
 pub struct Days(Duration);
 
 impl Display for Days {
+    #[inline]
     fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
         let days = self.0 / Duration::in_days(1.0);
         write!(f, "{:.1} days", days)
     }
-}
-
-#[test]
-fn duration_float_from_duration() {
-    let one_second = ChronoDuration::seconds(1);
-    let one_second = Duration::from(one_second);
-
-    assert_eq!(Duration::in_s(1.0), one_second);
 }
 
 scalar! {
@@ -176,3 +186,16 @@ scalar_div! { f64 | Duration = Frequency }
 scalar_squared!(Duration ^ 2 = DurationSquared);
 
 scalar_div!(Length | Acceleration = DurationSquared);
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn duration_float_from_duration() {
+        let one_second = ChronoDuration::seconds(1);
+        let one_second = Duration::from(one_second);
+
+        assert_eq!(Duration::in_s(1.0), one_second);
+    }
+}
