@@ -29,11 +29,31 @@ impl Angle {
         self.value.cos()
     }
 
+    #[inline]
+    pub fn tan(self) -> f64 {
+        self.value.tan()
+    }
+
     const RAD_PER_DEG: f64 = PI / 180.0;
 
     pub const TAU: Self = Angle::in_rad(TAU);
 
     pub const PI: Self = Angle::in_rad(PI);
+
+    #[inline]
+    pub fn asin(value: f64) -> Angle {
+        Angle::in_rad(value.asin())
+    }
+
+    #[inline]
+    pub fn acos(value: f64) -> Angle {
+        Angle::in_rad(value.acos())
+    }
+
+    #[inline]
+    pub fn atan(value: f64) -> Angle {
+        Angle::in_rad(value.atan())
+    }
 }
 
 impl Distribution<Angle> for Standard {
