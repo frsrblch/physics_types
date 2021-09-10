@@ -64,6 +64,6 @@ mod test {
     fn distance3() {
         let d = (1.0, 2.0, 3.0) * M;
         assert_eq!(d, Distance3::in_m(1.0, 2.0, 3.0));
-        let v = d.x / crate::S;
+        let _v = d.x / crate::S;
     }
 }

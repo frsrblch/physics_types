@@ -64,6 +64,17 @@ macro_rules! scalar {
             }
         }
 
+        impl const $crate::New for $scalar {
+            type Value = $base;
+
+            fn new(value: $base) -> Self {
+                Self::new(value)
+            }
+            fn value(self) -> $base {
+                self.value
+            }
+        }
+
         impl const $crate::Wrapper for $scalar {
             type Inner = $base;
             #[inline]
@@ -429,6 +440,27 @@ macro_rules! scalar {
             #[inline]
             pub const fn $in_unit($unit: $base) -> Self {
                 Self::new($unit)
+            }
+        }
+
+        impl $crate::Vector2<$scalar> {
+            #[inline]
+            pub const fn $in_unit(x: $base, y: $base) -> Self {
+                Self {
+                    x: $scalar::$in_unit(x),
+                    y: $scalar::$in_unit(y),
+                }
+            }
+        }
+
+        impl $crate::Vector3<$scalar> {
+            #[inline]
+            pub const fn $in_unit(x: $base, y: $base, z: $base) -> Self {
+                Self {
+                    x: $scalar::$in_unit(x),
+                    y: $scalar::$in_unit(y),
+                    z: $scalar::$in_unit(z),
+                }
             }
         }
     };

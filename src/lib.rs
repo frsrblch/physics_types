@@ -33,6 +33,7 @@ mod speed;
 mod temperature;
 mod time;
 mod unit;
+mod vector;
 
 #[cfg(test)]
 mod test;
@@ -54,6 +55,7 @@ pub use speed::*;
 pub use temperature::*;
 pub use time::*;
 pub use unit::*;
+pub use vector::*;
 
 pub trait Sqrt {
     type Output;
@@ -68,12 +70,28 @@ impl Sqrt for f64 {
     }
 }
 
+impl Sqrt for f32 {
+    type Output = f32;
+    #[inline]
+    fn sqrt(self) -> Self::Output {
+        self.sqrt()
+    }
+}
+
 pub trait Squared {
     type Output;
     fn squared(self) -> Self::Output;
 }
 
-impl Squared for f64 {
+impl const Squared for f64 {
+    type Output = Self;
+    #[inline]
+    fn squared(self) -> Self::Output {
+        self * self
+    }
+}
+
+impl const Squared for f32 {
     type Output = Self;
     #[inline]
     fn squared(self) -> Self::Output {
@@ -86,12 +104,15 @@ pub trait Wrapper: Copy {
     fn value(self) -> Self::Inner;
 }
 
-trait New {
-    fn new(value: f64) -> Self;
-    fn value(self) -> f64;
+pub trait New {
+    type Value;
+    fn new(value: Self::Value) -> Self;
+    fn value(self) -> Self::Value;
 }
 
 impl const New for f64 {
+    type Value = f64;
+
     #[inline]
     fn new(value: f64) -> Self {
         value
@@ -99,6 +120,20 @@ impl const New for f64 {
 
     #[inline]
     fn value(self) -> f64 {
+        self
+    }
+}
+
+impl const New for f32 {
+    type Value = f32;
+
+    #[inline]
+    fn new(value: f32) -> Self {
+        value
+    }
+
+    #[inline]
+    fn value(self) -> f32 {
         self
     }
 }
