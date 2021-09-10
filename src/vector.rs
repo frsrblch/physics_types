@@ -51,6 +51,56 @@ macro_rules! impl_op {
                 }
             }
         }
+
+        impl<T> $op<$v<T>> for f64
+        where
+            f64: $op<T>,
+        {
+            type Output = $v<<f64 as $op<T>>::Output>;
+            #[inline]
+            fn $op_fn(self, rhs: $v<T>) -> Self::Output {
+                $v {
+                    $(
+                        $f: self.$op_fn(rhs.$f),
+                    )*
+                }
+            }
+        }
+
+        impl<T> $op<$v<T>> for &f64
+        where
+            f64: $op<$v<T>>,
+        {
+            type Output = <f64 as $op<$v<T>>>::Output;
+            #[inline]
+            fn $op_fn(self, rhs: $v<T>) -> Self::Output {
+                (*self).$op_fn(rhs)
+            }
+        }
+
+        impl<T> $op<&$v<T>> for f64
+        where
+            T: Copy,
+            f64: $op<$v<T>>,
+        {
+            type Output = <f64 as $op<$v<T>>>::Output;
+            #[inline]
+            fn $op_fn(self, rhs: &$v<T>) -> Self::Output {
+                self.$op_fn(*rhs)
+            }
+        }
+
+        impl<T> $op<&$v<T>> for &f64
+        where
+            T: Copy,
+            f64: $op<$v<T>>,
+        {
+            type Output = <f64 as $op<$v<T>>>::Output;
+            #[inline]
+            fn $op_fn(self, rhs: &$v<T>) -> Self::Output {
+                (*self).$op_fn(*rhs)
+            }
+        }
     };
 }
 
@@ -239,7 +289,31 @@ macro_rules! vector {
             }
         }
 
+        impl<T: Neg + Copy> Neg for &$v<T> {
+            type Output = $v<T::Output>;
+            #[inline]
+            fn neg(self) -> Self::Output {
+                $v {
+                    $(
+                        $f: self.$f.neg(),
+                    )*
+                }
+            }
+        }
+
         impl<T: Not> Not for $v<T> {
+            type Output = $v<T::Output>;
+            #[inline]
+            fn not(self) -> Self::Output {
+                $v {
+                    $(
+                        $f: self.$f.not(),
+                    )*
+                }
+            }
+        }
+
+        impl<T: Not + Copy> Not for &$v<T> {
             type Output = $v<T::Output>;
             #[inline]
             fn not(self) -> Self::Output {

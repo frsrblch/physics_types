@@ -1,12 +1,12 @@
-use crate::{Duration, Mass};
+use crate::{Duration, Mass, Vector2};
 
 pub const M: Length = Length::in_m(1.0);
 pub const KM: Length = Length::in_m(1e3);
 pub const AU: Length = Length::in_m(1.495978707e11);
 pub const LY: Length = Length::in_m(9.4607e15);
 
-vector_and_scalar! {
-    struct Distance([struct Length(f64); 2]) {
+scalar! {
+    struct Length(f64) {
         fn in_m(meters) -> Self;
     }
 }
@@ -26,7 +26,7 @@ impl Length {
     }
 }
 
-impl Distance {
+impl Vector2<Length> {
     /// Returns the position vector given an angle and a radius
     ///
     ///  # Arguments
@@ -48,10 +48,10 @@ mod test {
     #[test]
     fn vector_and_scalar() {
         let len = 4.0 * M;
-        let dist = (2.0, 3.0) * M;
+        let dist = Vector2::in_m(2.0, 3.0);
 
         assert_eq!(Length::in_m(4.0), len);
-        assert_eq!(Distance::in_m(2.0, 3.0), dist)
+        assert_eq!(Vector2::in_m(2.0, 3.0), dist)
     }
 
     #[test]

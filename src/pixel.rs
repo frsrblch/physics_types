@@ -1,28 +1,9 @@
-use crate::{Distance, Length};
+use crate::Length;
 use std::ops::Mul;
 
 scalar! {
     struct PixelScale(f32) {
         fn in_px_per_m(pixel_per_meter) -> Self;
-    }
-}
-
-impl Mul<PixelScale> for Distance {
-    type Output = (f32, f32);
-    #[inline]
-    fn mul(self, rhs: PixelScale) -> Self::Output {
-        (
-            self.x.value as f32 * rhs.value,
-            self.y.value as f32 * rhs.value,
-        )
-    }
-}
-
-impl Mul<Distance> for PixelScale {
-    type Output = (f32, f32);
-    #[inline]
-    fn mul(self, rhs: Distance) -> Self::Output {
-        rhs * self
     }
 }
 

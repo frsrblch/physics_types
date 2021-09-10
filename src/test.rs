@@ -1,5 +1,7 @@
-vector_and_scalar! {
-    struct TestVector([struct TestScalar(f64); 2]) {
+use crate::vector::Vector2;
+
+scalar! {
+    struct TestScalar(f64) {
         fn in_test(test) -> Self;
     }
 }
@@ -127,19 +129,19 @@ fn scalar_div_assign_test() {
 
 scalar! {
     struct Num(f64) {
-        fn in_test(test) -> Self;
+        fn in_num(test) -> Self;
     }
 }
 
 scalar! {
     struct Den(f64) {
-        fn in_test(test) -> Self;
+        fn in_den(test) -> Self;
     }
 }
 
 scalar! {
     struct Res(f64) {
-        fn in_test(test) -> Self;
+        fn in_res(test) -> Self;
     }
 }
 
@@ -147,9 +149,9 @@ scalar_div! { Num | Den = Res}
 
 #[test]
 fn scalar_div_conversion_test() {
-    let num = Num::in_test(6.0);
-    let den = Den::in_test(2.0);
-    let res = Res::in_test(3.0);
+    let num = Num::in_num(6.0);
+    let den = Den::in_den(2.0);
+    let res = Res::in_res(3.0);
 
     assert_eq!(res, num / den);
     assert_eq!(res, &num / den);
@@ -159,9 +161,9 @@ fn scalar_div_conversion_test() {
 
 #[test]
 fn scalar_mul_conversion_test() {
-    let num = Num::in_test(6.0);
-    let den = Den::in_test(2.0);
-    let res = Res::in_test(3.0);
+    let num = Num::in_num(6.0);
+    let den = Den::in_den(2.0);
+    let res = Res::in_res(3.0);
 
     assert_eq!(num, res * den);
     assert_eq!(num, &res * den);
@@ -199,10 +201,10 @@ fn scalar_neg_test() {
 
 #[test]
 fn vector_add_test() {
-    let a = TestVector::in_test(2.0, 3.0);
-    let b = TestVector::in_test(5.0, 7.0);
+    let a = Vector2::in_test(2.0, 3.0);
+    let b = Vector2::in_test(5.0, 7.0);
 
-    let expected = TestVector::in_test(7.0, 10.0);
+    let expected = Vector2::in_test(7.0, 10.0);
 
     assert_eq!(expected, a + b);
     assert_eq!(expected, &a + b);
@@ -212,10 +214,10 @@ fn vector_add_test() {
 
 #[test]
 fn vector_add_assign_test() {
-    let a_0 = TestVector::in_test(2.0, 3.0);
-    let b = TestVector::in_test(5.0, 7.0);
+    let a_0 = Vector2::in_test(2.0, 3.0);
+    let b = Vector2::in_test(5.0, 7.0);
 
-    let expected = TestVector::in_test(7.0, 10.0);
+    let expected = Vector2::in_test(7.0, 10.0);
 
     let mut a = a_0;
     a += b;
@@ -228,10 +230,10 @@ fn vector_add_assign_test() {
 
 #[test]
 fn vector_sub_test() {
-    let a = TestVector::in_test(2.0, 3.0);
-    let b = TestVector::in_test(5.0, 7.0);
+    let a = Vector2::in_test(2.0, 3.0);
+    let b = Vector2::in_test(5.0, 7.0);
 
-    let expected = TestVector::in_test(-3.0, -4.0);
+    let expected = Vector2::in_test(-3.0, -4.0);
 
     assert_eq!(expected, a - b);
     assert_eq!(expected, &a - b);
@@ -241,10 +243,10 @@ fn vector_sub_test() {
 
 #[test]
 fn vector_sub_assign_test() {
-    let a_0 = TestVector::in_test(2.0, 3.0);
-    let b = TestVector::in_test(5.0, 7.0);
+    let a_0 = Vector2::in_test(2.0, 3.0);
+    let b = Vector2::in_test(5.0, 7.0);
 
-    let expected = TestVector::in_test(-3.0, -4.0);
+    let expected = Vector2::in_test(-3.0, -4.0);
 
     let mut a = a_0;
     a -= b;
@@ -257,10 +259,10 @@ fn vector_sub_assign_test() {
 
 #[test]
 fn vector_mul_test() {
-    let a = TestVector::in_test(2.0, 3.0);
+    let a = Vector2::in_test(2.0, 3.0);
     let b = 5.0f64;
 
-    let expected = TestVector::in_test(10.0, 15.0);
+    let expected = Vector2::in_test(10.0, 15.0);
 
     assert_eq!(expected, a * b);
     assert_eq!(expected, &a * b);
@@ -275,10 +277,10 @@ fn vector_mul_test() {
 
 #[test]
 fn vector_mul_assign_test() {
-    let a_0 = TestVector::in_test(2.0, 3.0);
+    let a_0 = Vector2::in_test(2.0, 3.0);
     let b = 5.0f64;
 
-    let expected = TestVector::in_test(10.0, 15.0);
+    let expected = Vector2::in_test(10.0, 15.0);
 
     let mut a = a_0;
     a *= b;
@@ -291,10 +293,10 @@ fn vector_mul_assign_test() {
 
 #[test]
 fn vector_div_test() {
-    let a = TestVector::in_test(10.0, 15.0);
+    let a = Vector2::in_test(10.0, 15.0);
     let b = 5.0f64;
 
-    let expected = TestVector::in_test(2.0, 3.0);
+    let expected = Vector2::in_test(2.0, 3.0);
 
     assert_eq!(expected, a / b);
     assert_eq!(expected, &a / b);
@@ -304,10 +306,10 @@ fn vector_div_test() {
 
 #[test]
 fn vector_div_assign_test() {
-    let a_0 = TestVector::in_test(10.0, 15.0);
+    let a_0 = Vector2::in_test(10.0, 15.0);
     let b = 5.0f64;
 
-    let expected = TestVector::in_test(2.0, 3.0);
+    let expected = Vector2::in_test(2.0, 3.0);
 
     let mut a = a_0;
     a /= b;
@@ -320,9 +322,9 @@ fn vector_div_assign_test() {
 
 #[test]
 fn vector_neg_test() {
-    let a = TestVector::in_test(2.0, 3.0);
+    let a = Vector2::in_test(2.0, 3.0);
 
-    let neg = TestVector::in_test(-2.0, -3.0);
+    let neg = Vector2::in_test(-2.0, -3.0);
 
     assert_eq!(neg, -a);
     assert_eq!(neg, -&a);
