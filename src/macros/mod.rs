@@ -5,13 +5,7 @@ mod scalar;
 mod vector;
 
 #[macro_use]
-mod vector3;
-
-#[macro_use]
 mod vector_and_scalar;
-
-#[macro_use]
-mod vector3_and_scalar;
 
 #[macro_use]
 mod scalar_div;

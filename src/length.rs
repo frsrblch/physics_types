@@ -5,7 +5,7 @@ pub const KM: Length = Length::in_m(1e3);
 pub const AU: Length = Length::in_m(1.495978707e11);
 pub const LY: Length = Length::in_m(9.4607e15);
 
-vector3_and_scalar! {
+vector_and_scalar! {
     struct Distance([struct Length(f64); 2]) {
         fn in_m(meters) -> Self;
     }
