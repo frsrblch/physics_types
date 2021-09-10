@@ -1,6 +1,4 @@
-use crate::constants::G;
-use crate::{vector3_and_scalar, Duration, Mass};
-use std::f64::consts::PI;
+use crate::{Duration, Mass};
 
 pub const M: Length = Length::in_m(1.0);
 pub const KM: Length = Length::in_m(1e3);
@@ -16,11 +14,15 @@ vector3_and_scalar! {
 impl Length {
     #[inline]
     pub fn of_orbit(mass: Mass, period: Duration) -> Self {
-        const FOUR_PI_SQUARED: f64 = 4.0 * (PI * PI);
+        use crate::constants::G;
+        use std::f64::consts::TAU;
+
+        const G_OVER_TAU_SQUARED: f64 = G / (TAU * TAU);
         const ONE_THIRD: f64 = 1.0 / 3.0;
-        let meters =
-            (G * mass.value * period.value * period.value / FOUR_PI_SQUARED).powf(ONE_THIRD);
-        Length::in_m(meters)
+
+        Length::in_m(
+            (G_OVER_TAU_SQUARED * mass.value * period.value * period.value).powf(ONE_THIRD),
+        )
     }
 }
 
@@ -58,12 +60,5 @@ mod test {
         let expected = Length::in_m(1.0807);
         let actual = Length::of_orbit(crate::Mass::in_kg(100.0), Duration::in_hours(24.0));
         assert!((expected - actual).abs().value < 0.0001);
-    }
-
-    #[test]
-    fn distance3() {
-        let d = (1.0, 2.0, 3.0) * M;
-        assert_eq!(d, Distance3::in_m(1.0, 2.0, 3.0));
-        let _v = d.x / crate::S;
     }
 }

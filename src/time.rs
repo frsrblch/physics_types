@@ -114,6 +114,16 @@ scalar! {
 
 impl Duration {
     #[inline]
+    pub fn of_orbit(radius: Length, mass: Mass) -> Self {
+        use crate::constants::G;
+        use std::f64::consts::TAU;
+
+        const TAU_SQUARED_OVER_G: f64 = TAU * TAU / G;
+
+        Duration::in_s((radius.value.powi(3) * TAU_SQUARED_OVER_G / mass.value).sqrt())
+    }
+
+    #[inline]
     pub const fn in_days(days: f64) -> Self {
         Self::in_s(days * Self::SECONDS_PER_DAY)
     }
@@ -197,5 +207,16 @@ mod test {
         let one_second = Duration::from(one_second);
 
         assert_eq!(Duration::in_s(1.0), one_second);
+    }
+
+    #[test]
+    fn orbit_distance_and_period() {
+        let mass = Mass::in_kg(1.0);
+        let radius = Length::in_m(1.0);
+
+        let duration = Duration::of_orbit(radius, mass);
+        let radius_2 = Length::of_orbit(mass, duration);
+
+        assert_eq!(radius, radius_2);
     }
 }
