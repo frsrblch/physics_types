@@ -101,6 +101,12 @@ macro_rules! scalar {
             }
         }
 
+        impl From<$scalar> for $base {
+            fn from(value: $scalar) -> $base {
+                value.value
+            }
+        }
+
         impl const std::ops::Add for $scalar {
             type Output = Self;
             #[inline]

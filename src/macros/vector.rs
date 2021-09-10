@@ -26,6 +26,10 @@ macro_rules! vector {
             fn magnitude_squared_float(self) -> $base {
                 self.x.value * self.x.value + self.y.value * self.y.value
             }
+
+            pub fn unit_vector(self) -> Option<$crate::UnitVector> {
+                $crate::UnitVector::new(self.x, self.y)
+            }
         }
 
         impl const std::ops::Add<$vector> for $vector {

@@ -32,6 +32,7 @@ mod power;
 mod speed;
 mod temperature;
 mod time;
+mod unit;
 
 #[cfg(test)]
 mod test;
@@ -52,6 +53,7 @@ pub use power::*;
 pub use speed::*;
 pub use temperature::*;
 pub use time::*;
+pub use unit::*;
 
 pub trait Sqrt {
     type Output;
