@@ -1,6 +1,6 @@
 use super::{Duration, Length};
 
-vector_and_scalar! {
+vector3_and_scalar! {
     struct Velocity([struct Speed(f64); 2]) {
         fn in_m_per_s(meters_per_second) -> Self;
     }

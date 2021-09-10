@@ -1,5 +1,5 @@
 use crate::constants::G;
-use crate::{vector_and_scalar, Duration, Mass};
+use crate::{vector3_and_scalar, Duration, Mass};
 use std::f64::consts::PI;
 
 pub const M: Length = Length::in_m(1.0);
@@ -7,7 +7,7 @@ pub const KM: Length = Length::in_m(1e3);
 pub const AU: Length = Length::in_m(1.495978707e11);
 pub const LY: Length = Length::in_m(9.4607e15);
 
-vector_and_scalar! {
+vector3_and_scalar! {
     struct Distance([struct Length(f64); 2]) {
         fn in_m(meters) -> Self;
     }
@@ -58,5 +58,12 @@ mod test {
         let expected = Length::in_m(1.0807);
         let actual = Length::of_orbit(crate::Mass::in_kg(100.0), Duration::in_hours(24.0));
         assert!((expected - actual).abs().value < 0.0001);
+    }
+
+    #[test]
+    fn distance3() {
+        let d = (1.0, 2.0, 3.0) * M;
+        assert_eq!(d, Distance3::in_m(1.0, 2.0, 3.0));
+        let v = d.x / crate::S;
     }
 }

@@ -1,3 +1,4 @@
+use crate::Scalar;
 use std::cmp::Ordering;
 use std::ops::{Mul, Not};
 
@@ -5,18 +6,21 @@ use std::ops::{Mul, Not};
 pub struct UnitInterval(f64);
 
 impl PartialOrd for UnitInterval {
+    #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         Some(self.cmp(other))
     }
 }
 
 impl Ord for UnitInterval {
+    #[inline]
     fn cmp(&self, other: &Self) -> Ordering {
         self.0.partial_cmp(&other.0).unwrap()
     }
 }
 
 impl PartialEq for UnitInterval {
+    #[inline]
     fn eq(&self, other: &Self) -> bool {
         self.0.eq(&other.0)
     }
@@ -25,12 +29,14 @@ impl PartialEq for UnitInterval {
 impl Eq for UnitInterval {}
 
 impl From<f64> for UnitInterval {
+    #[inline]
     fn from(value: f64) -> Self {
         Self::clamp(value)
     }
 }
 
 impl From<UnitInterval> for f64 {
+    #[inline]
     fn from(value: UnitInterval) -> Self {
         value.0
     }
@@ -39,6 +45,7 @@ impl From<UnitInterval> for f64 {
 impl Mul for UnitInterval {
     type Output = Self;
 
+    #[inline]
     fn mul(self, rhs: Self) -> Self::Output {
         Self(self.0.mul(rhs.0))
     }
@@ -47,6 +54,7 @@ impl Mul for UnitInterval {
 impl Mul<&Self> for UnitInterval {
     type Output = Self;
 
+    #[inline]
     fn mul(self, rhs: &Self) -> Self::Output {
         self.mul(*rhs)
     }
@@ -55,16 +63,19 @@ impl Mul<&Self> for UnitInterval {
 impl Not for UnitInterval {
     type Output = Self;
 
+    #[inline]
     fn not(self) -> Self::Output {
         Self(1.0 - self.0)
     }
 }
 
 impl UnitInterval {
+    #[inline]
     pub fn clamp(value: f64) -> Self {
         Self(value.max(0.0).min(1.0))
     }
 
+    #[inline]
     pub fn f64(self) -> f64 {
         self.0
     }
@@ -77,6 +88,7 @@ pub struct UnitVector {
 }
 
 impl UnitVector {
+    #[inline]
     pub fn new<T>(x: T, y: T) -> Option<Self>
     where
         T: Into<f64>,
@@ -97,8 +109,31 @@ impl UnitVector {
         Some(Self { x, y })
     }
 
-    pub fn new_unchecked(x: f64, y: f64) -> Self {
+    #[inline]
+    pub const fn new_unchecked(x: f64, y: f64) -> Self {
         Self { x, y }
+    }
+
+    #[inline]
+    pub const fn x(&self) -> f64 {
+        self.x
+    }
+
+    #[inline]
+    pub const fn y(&self) -> f64 {
+        self.y
+    }
+}
+
+impl<T> Mul<T> for UnitVector
+where
+    T: Copy + Scalar + Mul<f64, Output = T>,
+{
+    type Output = T::Vector;
+
+    #[inline]
+    fn mul(self, rhs: T) -> Self::Output {
+        T::vector(rhs * self.x, rhs * self.y)
     }
 }
 
@@ -110,6 +145,7 @@ pub struct UnitVector3 {
 }
 
 impl UnitVector3 {
+    #[inline]
     pub fn new<T>(x: T, y: T, z: T) -> Option<Self>
     where
         T: Into<f64>,
@@ -132,8 +168,24 @@ impl UnitVector3 {
         Some(Self { x, y, z })
     }
 
-    pub fn new_unchecked(x: f64, y: f64, z: f64) -> Self {
+    #[inline]
+    pub const fn new_unchecked(x: f64, y: f64, z: f64) -> Self {
         Self { x, y, z }
+    }
+
+    #[inline]
+    pub const fn x(&self) -> f64 {
+        self.x
+    }
+
+    #[inline]
+    pub const fn y(&self) -> f64 {
+        self.y
+    }
+
+    #[inline]
+    pub const fn z(&self) -> f64 {
+        self.z
     }
 }
 

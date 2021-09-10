@@ -102,6 +102,7 @@ macro_rules! scalar {
         }
 
         impl From<$scalar> for $base {
+            #[inline]
             fn from(value: $scalar) -> $base {
                 value.value
             }

@@ -102,3 +102,13 @@ impl const New for f64 {
         self
     }
 }
+
+pub trait Scalar: Sized {
+    type Vector;
+    fn vector(x: Self, y: Self) -> Self::Vector;
+}
+
+pub trait Scalar3: Sized {
+    type Vector;
+    fn vector3(x: Self, y: Self, z: Self) -> Self::Vector;
+}
