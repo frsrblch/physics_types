@@ -184,6 +184,36 @@ macro_rules! impl_op_assign_self {
     };
 }
 
+macro_rules! impl_op_self_only {
+    (
+                $op:ident::$op_fn:ident for $v:ident { $( $f:ident, )* }
+    ) => {
+        impl<T: $op> $op for $v<T> {
+            type Output = $v<T::Output>;
+            #[inline]
+            fn $op_fn(self) -> Self::Output {
+                $v {
+                    $(
+                        $f: self.$f.$op_fn(),
+                    )*
+                }
+            }
+        }
+
+        impl<T: $op + Copy> $op for &$v<T> {
+            type Output = $v<T::Output>;
+            #[inline]
+            fn $op_fn(self) -> Self::Output {
+                $v {
+                    $(
+                        $f: self.$f.$op_fn(),
+                    )*
+                }
+            }
+        }
+    }
+}
+
 macro_rules! vector {
     (
         struct $v:ident {
@@ -277,52 +307,12 @@ macro_rules! vector {
             SubAssign::sub_assign for $v { $( $f, )* }
         }
 
-        impl<T: Neg> Neg for $v<T> {
-            type Output = $v<T::Output>;
-            #[inline]
-            fn neg(self) -> Self::Output {
-                $v {
-                    $(
-                        $f: self.$f.neg(),
-                    )*
-                }
-            }
+        impl_op_self_only! {
+            Neg::neg for $v { $( $f, )* }
         }
 
-        impl<T: Neg + Copy> Neg for &$v<T> {
-            type Output = $v<T::Output>;
-            #[inline]
-            fn neg(self) -> Self::Output {
-                $v {
-                    $(
-                        $f: self.$f.neg(),
-                    )*
-                }
-            }
-        }
-
-        impl<T: Not> Not for $v<T> {
-            type Output = $v<T::Output>;
-            #[inline]
-            fn not(self) -> Self::Output {
-                $v {
-                    $(
-                        $f: self.$f.not(),
-                    )*
-                }
-            }
-        }
-
-        impl<T: Not + Copy> Not for &$v<T> {
-            type Output = $v<T::Output>;
-            #[inline]
-            fn not(self) -> Self::Output {
-                $v {
-                    $(
-                        $f: self.$f.not(),
-                    )*
-                }
-            }
+        impl_op_self_only! {
+            Not::not for $v { $( $f, )* }
         }
     }
 }
