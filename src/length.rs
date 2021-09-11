@@ -1,4 +1,4 @@
-use crate::{Duration, Mass, Vector2};
+use crate::{Duration, Mass};
 
 pub const M: Length = Length::in_m(1.0);
 pub const KM: Length = Length::in_m(1e3);
@@ -26,24 +26,10 @@ impl Length {
     }
 }
 
-impl Vector2<Length> {
-    /// Returns the position vector given an angle and a radius
-    ///
-    ///  # Arguments
-    ///
-    /// * `angle` - as measured clockwise from the positive y-axis
-    /// * `magnitude` - length of the resulting vector
-    #[inline]
-    pub fn from_angle_and_radius(angle: super::Angle, magnitude: Length) -> Self {
-        let x = magnitude * angle.sin();
-        let y = magnitude * angle.cos();
-        Self { x, y }
-    }
-}
-
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::Vector2;
 
     #[test]
     fn vector_and_scalar() {

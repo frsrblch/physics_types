@@ -346,6 +346,24 @@ impl<T: Default> From<Vector2<T>> for Vector3<T> {
     }
 }
 
+impl<T> Vector2<T>
+where
+    T: Copy + Mul<f64, Output = T>,
+{
+    /// Returns the position vector given an angle and a radius
+    ///
+    ///  # Arguments
+    ///
+    /// * `angle` - as measured clockwise from the positive y-axis
+    /// * `magnitude` - length of the resulting vector
+    #[inline]
+    pub fn from_angle_and_magnitude(angle: super::Angle, magnitude: T) -> Self {
+        let x = magnitude * angle.sin();
+        let y = magnitude * angle.cos();
+        Self { x, y }
+    }
+}
+
 impl<T> Vector3<T> {
     #[inline]
     pub fn project_xy(self) -> Vector2<T> {
@@ -359,7 +377,7 @@ impl<T> Vector3<T> {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::{Area, Duration, Length, Speed};
+    use crate::{Area, Duration, Length};
 
     #[test]
     fn sum_macro() {
@@ -483,15 +501,9 @@ mod test {
 
     #[test]
     fn vector_mul_scalar() {
-        let v = Vector2 {
-            x: Speed::in_m_per_s(2.0),
-            y: Speed::in_m_per_s(3.0),
-        };
+        let v = Vector2::in_m_per_s(2.0, 3.0);
         let dt = Duration::in_s(4.0);
-        let d = Vector2 {
-            x: Length::in_m(8.0),
-            y: Length::in_m(12.0),
-        };
+        let d = Vector2::in_m(8.0, 12.0);
 
         assert_eq!(d, v * dt);
         assert_eq!(d, v * &dt);
@@ -523,17 +535,20 @@ mod test {
 
     #[test]
     fn vector_div_assign() {
-        let mut d2 = Vector2 {
-            x: Length::in_m(2.0),
-            y: Length::in_m(4.0),
-        };
-        let d = Vector2 {
-            x: Length::in_m(1.0),
-            y: Length::in_m(2.0),
-        };
+        let mut d2 = Vector2::in_m(2.0, 4.0);
+        let d = Vector2::in_m(1.0, 2.0);
 
         d2 /= 2.0;
 
         assert_eq!(d2, d);
+    }
+
+    #[test]
+    fn unit_vector() {
+        assert_eq!(None, Vector2::in_m(0.0, 0.0).unit_vector());
+        assert_eq!(
+            Some(Vector2 { x: 1.0, y: 0.0 }),
+            Vector2::in_m(2.0, 0.0).unit_vector()
+        );
     }
 }
