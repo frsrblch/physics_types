@@ -220,12 +220,12 @@ macro_rules! vector {
             $( $f:ident $(,)? )*
         }
     ) => {
-        #[derive(Debug, Default, Copy, Clone, Eq, PartialEq)]
-        pub struct $v <T> {
-            $(
-                pub $f: T,
-            )*
-        }
+        // #[derive(Debug, Default, Copy, Clone, Eq, PartialEq)]
+        // pub struct $v <T> {
+        //     $(
+        //         pub $f: T,
+        //     )*
+        // }
 
         impl<T, F> $v <T>
         where
@@ -323,6 +323,30 @@ vector! {
 
 vector! {
     struct Vector3 { x, y, z }
+}
+
+#[derive(Debug, Default, Copy, Clone, Eq, PartialEq)]
+pub struct Vector2<X, Y = X> {
+    pub x: X,
+    pub y: Y,
+}
+
+#[derive(Debug, Default, Copy, Clone, Eq, PartialEq)]
+pub struct Vector3<X, Y = X, Z = X> {
+    pub x: X,
+    pub y: Y,
+    pub z: Z,
+}
+
+use crate::Angle;
+impl<T: Mul<f64, Output = T> + Copy> Vector3<T, Angle, Angle> {
+    pub fn euclidean(self) -> Vector3<T> {
+        Vector3 {
+            x: self.x * self.y.cos() * self.z.sin(),
+            y: self.x * self.y.sin() * self.z.sin(),
+            z: self.x * self.z.cos(),
+        }
+    }
 }
 
 impl<T: Default> From<Vector2<T>> for Vector3<T> {

@@ -1,8 +1,8 @@
-use crate::{Length, Vector2};
+use crate::{Distance, Vector2};
 use std::ops::{Add, AddAssign, Sub, SubAssign};
 
 #[derive(Debug, Default, Copy, Clone, Eq, PartialEq)]
-pub struct Position(Vector2<Length>);
+pub struct Position(Distance);
 
 impl Position {
     #[inline]
@@ -19,117 +19,133 @@ impl Position {
 }
 
 #[rustfmt::skip]
-impl const From<Vector2<Length>> for Position {
+impl const From<Distance> for Position {
     #[inline]
-    fn from(value: Vector2<Length>) -> Self {
+    fn from(value: Distance) -> Self {
         Self(value)
     }
 }
 
-impl Add<Vector2<Length>> for Position {
+impl Add<Distance> for Position {
     type Output = Position;
     #[inline]
-    fn add(self, rhs: Vector2<Length>) -> Self::Output {
-        (self.0 + rhs).into()
+    fn add(self, rhs: Distance) -> Self::Output {
+        self.0.add(rhs).into()
     }
 }
 
-impl Add<&Vector2<Length>> for Position {
+impl Add<&Distance> for Position {
     type Output = Position;
     #[inline]
-    fn add(self, rhs: &Vector2<Length>) -> Self::Output {
-        (self.0 + rhs).into()
+    fn add(self, rhs: &Distance) -> Self::Output {
+        self.0.add(rhs).into()
     }
 }
 
-impl AddAssign<Vector2<Length>> for Position {
+impl Add<Distance> for &Position {
+    type Output = Position;
     #[inline]
-    fn add_assign(&mut self, rhs: Vector2<Length>) {
+    fn add(self, rhs: Distance) -> Self::Output {
+        self.0.add(rhs).into()
+    }
+}
+
+impl Add<&Distance> for &Position {
+    type Output = Position;
+    #[inline]
+    fn add(self, rhs: &Distance) -> Self::Output {
+        self.0.add(rhs).into()
+    }
+}
+
+impl AddAssign<Distance> for Position {
+    #[inline]
+    fn add_assign(&mut self, rhs: Distance) {
         self.0.add_assign(rhs);
     }
 }
 
-impl AddAssign<&Vector2<Length>> for Position {
+impl AddAssign<&Distance> for Position {
     #[inline]
-    fn add_assign(&mut self, rhs: &Vector2<Length>) {
+    fn add_assign(&mut self, rhs: &Distance) {
         self.0.add_assign(rhs)
     }
 }
 
-impl Sub<Vector2<Length>> for Position {
+impl Sub<Distance> for Position {
     type Output = Position;
     #[inline]
-    fn sub(self, rhs: Vector2<Length>) -> Self::Output {
+    fn sub(self, rhs: Distance) -> Self::Output {
         self.0.sub(rhs).into()
     }
 }
 
-impl Sub<&Vector2<Length>> for Position {
+impl Sub<&Distance> for Position {
     type Output = Position;
     #[inline]
-    fn sub(self, rhs: &Vector2<Length>) -> Self::Output {
+    fn sub(self, rhs: &Distance) -> Self::Output {
         self.0.sub(rhs).into()
     }
 }
 
-impl Sub<Vector2<Length>> for &Position {
+impl Sub<Distance> for &Position {
     type Output = Position;
     #[inline]
-    fn sub(self, rhs: Vector2<Length>) -> Self::Output {
+    fn sub(self, rhs: Distance) -> Self::Output {
         self.0.sub(rhs).into()
     }
 }
 
-impl Sub<&Vector2<Length>> for &Position {
+impl Sub<&Distance> for &Position {
     type Output = Position;
     #[inline]
-    fn sub(self, rhs: &Vector2<Length>) -> Self::Output {
+    fn sub(self, rhs: &Distance) -> Self::Output {
         self.0.sub(rhs).into()
     }
 }
 
-impl SubAssign<Vector2<Length>> for Position {
+impl SubAssign<Distance> for Position {
     #[inline]
-    fn sub_assign(&mut self, rhs: Vector2<Length>) {
+    fn sub_assign(&mut self, rhs: Distance) {
         self.0.sub_assign(rhs);
     }
 }
 
-impl SubAssign<&Vector2<Length>> for Position {
+impl SubAssign<&Distance> for Position {
     #[inline]
-    fn sub_assign(&mut self, rhs: &Vector2<Length>) {
+    fn sub_assign(&mut self, rhs: &Distance) {
         self.0.sub_assign(rhs);
     }
 }
 
 impl Sub for Position {
-    type Output = Vector2<Length>;
+    type Output = Distance;
     #[inline]
-    fn sub(self, rhs: Position) -> Vector2<Length> {
+    fn sub(self, rhs: Position) -> Distance {
         self.0.sub(rhs.0)
     }
 }
 
 impl Sub<&Position> for Position {
-    type Output = Vector2<Length>;
+    type Output = Distance;
     #[inline]
-    fn sub(self, rhs: &Position) -> Vector2<Length> {
+    fn sub(self, rhs: &Position) -> Distance {
         self.0.sub(rhs.0)
     }
 }
 
 impl Sub<Position> for &Position {
-    type Output = Vector2<Length>;
+    type Output = Distance;
     #[inline]
-    fn sub(self, rhs: Position) -> Vector2<Length> {
+    fn sub(self, rhs: Position) -> Distance {
         self.0.sub(rhs.0)
     }
 }
 
 impl Sub<&Position> for &Position {
-    type Output = Vector2<Length>;
+    type Output = Distance;
     #[inline]
-    fn sub(self, rhs: &Position) -> Vector2<Length> {
+    fn sub(self, rhs: &Position) -> Distance {
         self.0.sub(rhs.0)
     }
 }

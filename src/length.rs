@@ -3,7 +3,9 @@ use crate::{Duration, Mass};
 pub const M: Length = Length::in_m(1.0);
 pub const KM: Length = Length::in_m(1e3);
 pub const AU: Length = Length::in_m(1.495978707e11);
-pub const LY: Length = Length::in_m(9.4607e15);
+pub const LY: Length = Length::in_m(9.460_730_472_580_8e15);
+
+pub type Distance = crate::Vector2<Length>;
 
 scalar! {
     struct Length(f64) {
