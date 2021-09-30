@@ -1,4 +1,4 @@
-use crate::{Duration, Energy, Force, Speed};
+use crate::{Area, Duration, Energy, Force, Speed};
 
 scalar! {
     struct Power(f64) {
@@ -8,6 +8,14 @@ scalar! {
 
 scalar_div!(Energy | Duration = Power);
 scalar_div!(Power | Speed = Force);
+
+scalar! {
+    struct FluxDensity(f64) {
+        fn in_w_per_m2(watts_per_meter_squared) -> Self;
+    }
+}
+
+scalar_div!(Power | Area = FluxDensity);
 
 #[cfg(test)]
 mod test {
