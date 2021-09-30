@@ -67,6 +67,15 @@ impl PopulationDensity {
 
 scalar_div! { Population | Area = PopulationDensity }
 
+scalar! {
+    struct MassPerPerson(f64) {
+        fn in_kg_per_person(kg_per_person) -> Self;
+    }
+}
+
+scalar_div! { Mass | Population = MassPerPerson }
+scalar_div! { MassPerPerson | Duration = MassRatePerPerson }
+
 #[cfg(test)]
 mod test {
     use super::*;
