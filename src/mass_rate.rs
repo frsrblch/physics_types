@@ -9,7 +9,7 @@ scalar! {
 impl MassRate {
     #[inline]
     pub const fn in_tons_per_day(tons_per_day: f64) -> Self {
-        tons_per_day * TON / DAY
+        tons_per_day * TONNE / DAY
     }
 
     #[inline]

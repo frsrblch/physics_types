@@ -6,6 +6,7 @@ use rand::Rng;
 use std::f64::consts::{PI, TAU};
 
 pub const DEG: Angle = Angle::in_deg(1.0);
+pub const RAD: Angle = Angle::in_rad(1.0);
 
 scalar! {
     struct Angle(f64) {

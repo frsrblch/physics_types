@@ -1,7 +1,7 @@
 use super::*;
 
 pub const KG: Mass = Mass::in_kg(1.0);
-pub const TON: Mass = Mass::in_kg(1e3);
+pub const TONNE: Mass = Mass::in_kg(1e3);
 
 scalar! {
     struct Mass(f64) {
@@ -38,7 +38,7 @@ mod test {
     use super::*;
 
     #[test]
-    fn request_enough() {
+    fn request_smaller_amount() {
         let mut mass = Mass::in_kg(3.0);
         let amount = Mass::in_kg(2.0);
 
@@ -50,7 +50,7 @@ mod test {
     }
 
     #[test]
-    fn request_insufficient() {
+    fn request_greater_amount() {
         let mut mass = Mass::in_kg(2.0);
         let amount = Mass::in_kg(3.0);
 
