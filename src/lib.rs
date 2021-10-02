@@ -1,4 +1,4 @@
-#![allow(incomplete_features)]
+#![allow(incomplete_features, non_upper_case_globals, mixed_script_confusables)]
 #![feature(
     const_panic,
     const_float_classify,
@@ -25,6 +25,7 @@ mod force;
 mod length;
 mod mass;
 mod mass_rate;
+mod mole;
 mod pixel;
 mod population;
 mod position;
@@ -47,6 +48,7 @@ pub use force::*;
 pub use length::*;
 pub use mass::*;
 pub use mass_rate::*;
+pub use mole::*;
 pub use pixel::*;
 pub use population::*;
 pub use position::*;
