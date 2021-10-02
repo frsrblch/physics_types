@@ -15,7 +15,7 @@ scalar! {
 }
 
 impl MolecularMass {
-    pub fn in_g_per_mol(grams_per_mole: f64) -> Self {
+    pub const fn in_g_per_mol(grams_per_mole: f64) -> Self {
         Self::in_kg_per_mol(grams_per_mole * 1e-3)
     }
 }
