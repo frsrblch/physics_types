@@ -37,7 +37,7 @@ mod test {
     fn orbit_radius() {
         // source: https://en.wikipedia.org/wiki/Orbital_period#Small_body_orbiting_a_central_body
         let expected = Length::in_m(1.0807);
-        let actual = Radius::of_orbit(crate::Mass::in_kg(100.0), Duration::in_hours(24.0));
+        let actual = Radius::of_orbit(crate::Mass::in_kg(100.0), Duration::in_hr(24.0));
         assert!((expected - actual).abs().value < 0.0001);
     }
 }

@@ -10,9 +10,9 @@ pub type ChronoDuration = chrono::Duration;
 
 pub const S: Duration = Duration::in_s(1.0);
 pub const MIN: Duration = Duration::in_s(60.0);
-pub const HR: Duration = Duration::in_hours(1.0);
-pub const DAY: Duration = Duration::in_hours(24.0);
-pub const YR: Duration = Duration::in_days(365.25);
+pub const HR: Duration = Duration::in_hr(1.0);
+pub const DAY: Duration = Duration::in_hr(24.0);
+pub const YR: Duration = Duration::in_d(365.25);
 
 /// Elapsed game time in seconds.
 #[derive(Debug, Default, Copy, Clone, PartialEq)]
@@ -27,7 +27,7 @@ impl TimeFloat {
     }
 
     #[inline]
-    pub fn in_days(days: f64) -> Self {
+    pub fn in_d(days: f64) -> Self {
         Self::in_s(days * Duration::SECONDS_PER_DAY)
     }
 
@@ -124,13 +124,18 @@ impl Duration {
     }
 
     #[inline]
-    pub const fn in_days(days: f64) -> Self {
+    pub const fn in_d(days: f64) -> Self {
         Self::in_s(days * Self::SECONDS_PER_DAY)
     }
 
     #[inline]
-    pub const fn in_hours(hours: f64) -> Self {
+    pub const fn in_hr(hours: f64) -> Self {
         Self::in_s(hours * Self::SECONDS_PER_HOUR)
+    }
+
+    #[inline]
+    pub const fn in_yr(years: f64) -> Self {
+        years * YR
     }
 
     #[inline]
@@ -174,7 +179,7 @@ pub struct Days(Duration);
 impl Display for Days {
     #[inline]
     fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
-        let days = self.0 / Duration::in_days(1.0);
+        let days = self.0 / Duration::in_d(1.0);
         write!(f, "{:.1} days", days)
     }
 }
