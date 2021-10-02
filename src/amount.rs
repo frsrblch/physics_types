@@ -1,9 +1,9 @@
 use crate::Mass;
 
-pub const MOL: Mole = Mole::in_mol(1.0);
+pub const MOL: Amount = Amount::in_mol(1.0);
 
 scalar! {
-    struct Mole(f64) {
+    struct Amount(f64) {
         fn in_mol(moles) -> Self;
     }
 }
@@ -20,4 +20,4 @@ impl MolecularMass {
     }
 }
 
-scalar_div!(Mass | Mole = MolecularMass);
+scalar_div!(Mass | Amount = MolecularMass);

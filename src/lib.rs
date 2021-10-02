@@ -12,54 +12,48 @@ use std::fmt::{Display, Formatter};
 #[macro_use]
 mod macros;
 
-mod constants {
+pub mod constants {
     pub const G: f64 = 6.6743015e-11;
 }
 
-mod accel;
-mod angle;
-mod area;
-mod credits;
-mod energy;
-mod force;
-mod length;
-mod mass;
-mod mass_rate;
-mod mole;
-mod pixel;
-mod population;
-mod position;
-mod power;
-mod pressure;
-mod speed;
-mod temperature;
-mod time;
-mod unit;
-mod vector;
+macro_rules! modules {
+    (
+        $( $m:ident $(,)? )*
+    ) => {
+        $(
+            mod $m;
+            pub use $m::*;
+        )*
+    };
+}
+
+modules! {
+    accel,
+    amount,
+    angle,
+    area,
+    credits,
+    energy,
+    force,
+    ideal_gas,
+    length,
+    mass,
+    mass_rate,
+    pixel,
+    population,
+    position,
+    power,
+    pressure,
+    speed,
+    temperature,
+    time,
+    unit,
+    vector,
+    volume,
+}
 
 #[cfg(test)]
 mod test;
-
-pub use accel::*;
-pub use angle::*;
-pub use area::*;
-pub use credits::*;
-pub use energy::*;
-pub use force::*;
-pub use length::*;
-pub use mass::*;
-pub use mass_rate::*;
-pub use mole::*;
-pub use pixel::*;
-pub use population::*;
-pub use position::*;
-pub use power::*;
-pub use pressure::*;
-pub use speed::*;
-pub use temperature::*;
-pub use time::*;
-pub use unit::*;
-pub use vector::*;
 
 pub trait Sqrt {
     type Output;
