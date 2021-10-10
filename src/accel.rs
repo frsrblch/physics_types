@@ -1,4 +1,5 @@
 use crate::constants::G;
+use crate::time::Frequency;
 use crate::{Duration, Length, Mass, Speed};
 
 scalar! {
@@ -8,6 +9,7 @@ scalar! {
 }
 
 scalar_div!(Speed | Duration = Acceleration);
+scalar_div!(Acceleration | Frequency = Speed);
 
 impl Acceleration {
     #[inline]

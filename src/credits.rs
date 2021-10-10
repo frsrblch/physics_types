@@ -1,4 +1,4 @@
-use crate::{Duration, Length, Mass, MassRatePerPerson, Population};
+use crate::{Duration, Frequency, Length, Mass, MassRatePerPerson, Population};
 use std::fmt::{Display, Formatter};
 
 pub const CR: Credits = Credits::in_credits(1.0);
@@ -16,6 +16,7 @@ scalar! {
 }
 
 scalar_div! { Credits | Duration = CreditRate }
+scalar_div! { CreditRate | Frequency = Credits }
 
 scalar! {
     struct PricePerMeter(f64) {
@@ -52,6 +53,7 @@ pub type Wage = CreditRatePerPerson;
 
 scalar_div! { CreditRate | Population = CreditRatePerPerson }
 scalar_div! { CreditsPerPerson | Duration = CreditRatePerPerson }
+scalar_div! { CreditRatePerPerson | Frequency = CreditsPerPerson }
 
 scalar! {
     struct Price(f64) {

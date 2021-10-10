@@ -1,5 +1,6 @@
-use super::{Duration, Length, Speed};
+use super::{Duration, Length};
 use crate::constants::G;
+use crate::time::Frequency;
 use crate::Mass;
 use rand::distributions::{Distribution, Standard};
 use rand::Rng;
@@ -79,8 +80,7 @@ impl AngularSpeed {
 }
 
 scalar_div!(Angle | Duration = AngularSpeed);
-
-scalar_div!(Speed | Length = AngularSpeed);
+scalar_div!(AngularSpeed | Frequency = Angle);
 
 #[cfg(test)]
 mod tests {

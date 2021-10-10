@@ -197,6 +197,7 @@ scalar! {
 }
 
 scalar_div! { f64 | Duration = Frequency }
+scalar_div! { Duration | Frequency = DurationSquared }
 
 scalar_squared!(Duration ^ 2 = DurationSquared);
 

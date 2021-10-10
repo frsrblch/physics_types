@@ -1,3 +1,4 @@
+use crate::time::Frequency;
 use crate::{Area, Duration, Energy, Force, Radius, Speed, Squared, Temperature};
 
 scalar! {
@@ -7,6 +8,7 @@ scalar! {
 }
 
 scalar_div!(Energy | Duration = Power);
+scalar_div!(Power | Frequency = Energy);
 scalar_div!(Power | Speed = Force);
 
 scalar! {

@@ -75,6 +75,7 @@ scalar! {
 
 scalar_div! { Mass | Population = MassPerPerson }
 scalar_div! { MassPerPerson | Duration = MassRatePerPerson }
+scalar_div! { MassRatePerPerson | Frequency = MassPerPerson }
 
 #[cfg(test)]
 mod test {
