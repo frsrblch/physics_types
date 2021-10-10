@@ -1,4 +1,4 @@
-use crate::{New, Sqrt};
+use crate::{Angle, New, Sqrt};
 use std::ops::*;
 
 macro_rules! sum {
@@ -332,14 +332,25 @@ vector! {
     struct Vector3 { x, y, z }
 }
 
-use crate::Angle;
-impl<T: Mul<f64, Output = T> + Copy> Vector3<T, Angle, Angle> {
+pub type Spherical<T> = Vector3<T, Angle, Angle>;
+
+impl<T: Mul<f64, Output = T> + Copy> Spherical<T> {
+    #[inline]
     pub fn euclidean(self) -> Vector3<T> {
         Vector3 {
             x: self.x * self.y.cos() * self.z.sin(),
             y: self.x * self.y.sin() * self.z.sin(),
             z: self.x * self.z.cos(),
         }
+    }
+}
+
+pub type Polar<T> = Vector2<T, Angle>;
+
+impl<T: Mul<f64, Output = T> + Copy> Polar<T> {
+    #[inline]
+    pub fn euclidean(self) -> Vector2<T, T> {
+        Vector2::from_angle_and_magnitude(self.y, self.x)
     }
 }
 
@@ -379,14 +390,6 @@ impl<T> Vector3<T> {
             x: self.x,
             y: self.y,
         }
-    }
-}
-
-pub type Polar<T> = Vector2<Angle, T>;
-
-impl<T: Mul<f64, Output = T> + Copy> Polar<T> {
-    pub fn coordinates(self) -> Vector2<T, T> {
-        Vector2::from_angle_and_magnitude(self.x, self.y)
     }
 }
 
