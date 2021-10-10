@@ -1,4 +1,9 @@
-#![allow(incomplete_features, non_upper_case_globals, mixed_script_confusables)]
+#![allow(
+    incomplete_features,
+    non_upper_case_globals,
+    mixed_script_confusables,
+    non_camel_case_types
+)]
 #![feature(
     const_panic,
     const_float_classify,

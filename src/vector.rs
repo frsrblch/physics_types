@@ -18,12 +18,12 @@ macro_rules! impl_op {
     (
         $op:ident::$op_fn:ident for $v:ident { $( $f:ident, )* }
     ) => {
-        impl<T, Rhs> $op<Rhs> for $v<T>
+        impl<Rhs, $($f,)* > $op<Rhs> for $v<$($f,)*>
         where
-            T: $op<Rhs>,
+            $( $f: $op<Rhs>, )*
             Rhs: Copy,
         {
-            type Output = $v<T::Output>;
+            type Output = $v< $($f::Output,)* >;
 
             #[inline]
             fn $op_fn(self, rhs: Rhs) -> Self::Output {
@@ -35,12 +35,12 @@ macro_rules! impl_op {
             }
         }
 
-        impl<T, Rhs> $op<Rhs> for &$v<T>
+        impl<Rhs, $($f,)* > $op<Rhs> for &$v<$($f,)*>
         where
-            T: $op<Rhs> + Copy,
+            $( $f: $op<Rhs> + Copy, )*
             Rhs: Copy,
         {
-            type Output = $v<T::Output>;
+            type Output = $v< $($f::Output,)* >;
 
             #[inline]
             fn $op_fn(self, rhs: Rhs) -> Self::Output {
@@ -52,13 +52,13 @@ macro_rules! impl_op {
             }
         }
 
-        impl<T> $op<$v<T>> for f64
+        impl< $($f,)* > $op<$v< $($f,)* >> for f64
         where
-            f64: $op<T>,
+            $( f64: $op<$f>, )*
         {
-            type Output = $v<<f64 as $op<T>>::Output>;
+            type Output = $v< $(<f64 as $op<$f>>::Output,)* >;
             #[inline]
-            fn $op_fn(self, rhs: $v<T>) -> Self::Output {
+            fn $op_fn(self, rhs: $v<$($f,)*>) -> Self::Output {
                 $v {
                     $(
                         $f: self.$op_fn(rhs.$f),
@@ -67,37 +67,37 @@ macro_rules! impl_op {
             }
         }
 
-        impl<T> $op<$v<T>> for &f64
+        impl< $($f,)* > $op<$v< $($f,)* >> for &f64
         where
-            f64: $op<$v<T>>,
+            $( f64: $op<$f>, )*
         {
-            type Output = <f64 as $op<$v<T>>>::Output;
+            type Output = <f64 as $op<$v<$($f,)*>>>::Output;
             #[inline]
-            fn $op_fn(self, rhs: $v<T>) -> Self::Output {
+            fn $op_fn(self, rhs: $v<$($f,)*>) -> Self::Output {
                 (*self).$op_fn(rhs)
             }
         }
 
-        impl<T> $op<&$v<T>> for f64
+        impl< $($f,)* > $op<&$v<$($f,)*>> for f64
         where
-            T: Copy,
-            f64: $op<$v<T>>,
+            $($f: Copy,)*
+            f64: $op<$v<$($f,)*>>,
         {
-            type Output = <f64 as $op<$v<T>>>::Output;
+            type Output = <f64 as $op<$v< $($f,)* >>>::Output;
             #[inline]
-            fn $op_fn(self, rhs: &$v<T>) -> Self::Output {
+            fn $op_fn(self, rhs: &$v<$($f,)*>) -> Self::Output {
                 self.$op_fn(*rhs)
             }
         }
 
-        impl<T> $op<&$v<T>> for &f64
+        impl< $($f,)* > $op<&$v<$($f,)*>> for &f64
         where
-            T: Copy,
-            f64: $op<$v<T>>,
+            $($f: Copy,)*
+            f64: $op<$v<$($f,)*>>,
         {
-            type Output = <f64 as $op<$v<T>>>::Output;
+            type Output = <f64 as $op<$v<$($f,)*>>>::Output;
             #[inline]
-            fn $op_fn(self, rhs: &$v<T>) -> Self::Output {
+            fn $op_fn(self, rhs: &$v<$($f,)*>) -> Self::Output {
                 (*self).$op_fn(*rhs)
             }
         }
@@ -108,40 +108,40 @@ macro_rules! impl_op_self {
     (
         $op:ident::$op_fn:ident for $v:ident { $( $f:ident, )* }
     ) => {
-        impl<T: $op> $op<$v<T>> for $v <T> {
-            type Output = $v<T::Output>;
+        impl< $( $f: $op, )* > $op<$v< $($f,)* >> for $v< $($f,)* > {
+            type Output = $v< $( $f::Output, )* >;
 
             #[inline]
-            fn $op_fn(self, rhs: $v<T>) -> Self::Output {
+            fn $op_fn(self, rhs: $v< $($f,)* >) -> Self::Output {
                 $v {
                     $( $f: self.$f.$op_fn(rhs.$f), )*
                 }
             }
         }
 
-        impl<T: $op + Copy> $op<&$v<T>> for $v<T> {
-            type Output = $v<T::Output>;
+        impl< $( $f: $op + Copy, )* > $op<&$v< $($f,)* >> for $v< $($f,)* > {
+            type Output = $v< $( $f::Output, )* >;
 
             #[inline]
-            fn $op_fn(self, rhs: &$v<T>) -> Self::Output {
+            fn $op_fn(self, rhs: &$v< $($f,)* >) -> Self::Output {
                 self.$op_fn(*rhs)
             }
         }
 
-        impl<T: $op + Copy> $op<$v<T>> for &$v<T> {
-            type Output = $v<T::Output>;
+        impl< $( $f: $op + Copy, )* > $op<$v< $($f,)* >> for &$v< $($f,)* > {
+            type Output = $v< $( $f::Output, )* >;
 
             #[inline]
-            fn $op_fn(self, rhs: $v<T>) -> Self::Output {
+            fn $op_fn(self, rhs: $v< $($f,)* >) -> Self::Output {
                 (*self).$op_fn(rhs)
             }
         }
 
-        impl<T: $op + Copy> $op<&$v<T>> for &$v<T> {
-            type Output = $v<T::Output>;
+        impl< $( $f: $op + Copy, )* > $op<&$v< $($f,)* >> for &$v< $($f,)* > {
+            type Output = $v< $( $f::Output, )* >;
 
             #[inline]
-            fn $op_fn(self, rhs: &$v<T>) -> Self::Output {
+            fn $op_fn(self, rhs: &$v< $($f,)* >) -> Self::Output {
                 (*self).$op_fn(*rhs)
             }
         }
@@ -152,9 +152,10 @@ macro_rules! impl_op_assign {
     (
         $op_assign:ident::$op_fn:ident for $v:ident { $( $f:ident, )* }
     ) => {
-        impl<T, Rhs> $op_assign<Rhs> for $v<T>
+        impl< Rhs, $($f,)* > $op_assign<Rhs> for $v< $($f,)* >
         where
-            T: $op_assign<Rhs>, Rhs: Copy
+            $( $f: $op_assign<Rhs>, )*
+            Rhs: Copy
         {
             #[inline]
             fn $op_fn(&mut self, rhs: Rhs) {
@@ -168,16 +169,16 @@ macro_rules! impl_op_assign_self {
     (
         $op_assign:ident::$op_fn:ident for $v:ident { $( $f:ident, )* }
     ) => {
-        impl<T: $op_assign> $op_assign for $v<T> {
+        impl< $($f: $op_assign,)* > $op_assign for $v< $($f,)* > {
             #[inline]
-            fn $op_fn(&mut self, rhs: $v<T>) {
+            fn $op_fn(&mut self, rhs: Self) {
                 $( self.$f.$op_fn(rhs.$f); )*
             }
         }
 
-        impl<T: $op_assign + Copy> $op_assign<&$v<T>> for $v<T> {
+        impl< $($f: $op_assign + Copy,)* > $op_assign<&$v< $($f,)* >> for $v< $($f,)* > {
             #[inline]
-            fn $op_fn(&mut self, rhs: &$v<T>) {
+            fn $op_fn(&mut self, rhs: &Self) {
                 $( self.$f.$op_fn(rhs.$f); )*
             }
         }
@@ -188,8 +189,8 @@ macro_rules! impl_op_self_only {
     (
                 $op:ident::$op_fn:ident for $v:ident { $( $f:ident, )* }
     ) => {
-        impl<T: $op> $op for $v<T> {
-            type Output = $v<T::Output>;
+        impl<$($f: $op,)*> $op for $v<$($f,)*> {
+            type Output = $v<$($f::Output,)*>;
             #[inline]
             fn $op_fn(self) -> Self::Output {
                 $v {
@@ -200,8 +201,8 @@ macro_rules! impl_op_self_only {
             }
         }
 
-        impl<T: $op + Copy> $op for &$v<T> {
-            type Output = $v<T::Output>;
+        impl<$($f: $op + Copy,)*> $op for &$v<$($f,)*> {
+            type Output = $v<$($f::Output,)*>;
             #[inline]
             fn $op_fn(self) -> Self::Output {
                 $v {
@@ -220,13 +221,6 @@ macro_rules! vector {
             $( $f:ident $(,)? )*
         }
     ) => {
-        // #[derive(Debug, Default, Copy, Clone, Eq, PartialEq)]
-        // pub struct $v <T> {
-        //     $(
-        //         pub $f: T,
-        //     )*
-        // }
-
         impl<T, F> $v <T>
         where
             T: New<Value = F> + Copy,
@@ -317,18 +311,14 @@ macro_rules! vector {
     }
 }
 
-vector! {
-    struct Vector2 { x, y }
-}
-
-vector! {
-    struct Vector3 { x, y, z }
-}
-
 #[derive(Debug, Default, Copy, Clone, Eq, PartialEq)]
 pub struct Vector2<X, Y = X> {
     pub x: X,
     pub y: Y,
+}
+
+vector! {
+    struct Vector2 { x, y }
 }
 
 #[derive(Debug, Default, Copy, Clone, Eq, PartialEq)]
@@ -336,6 +326,10 @@ pub struct Vector3<X, Y = X, Z = X> {
     pub x: X,
     pub y: Y,
     pub z: Z,
+}
+
+vector! {
+    struct Vector3 { x, y, z }
 }
 
 use crate::Angle;
@@ -385,6 +379,14 @@ impl<T> Vector3<T> {
             x: self.x,
             y: self.y,
         }
+    }
+}
+
+pub type Polar<T> = Vector2<Angle, T>;
+
+impl<T: Mul<f64, Output = T> + Copy> Polar<T> {
+    pub fn coordinates(self) -> Vector2<T, T> {
+        Vector2::from_angle_and_magnitude(self.x, self.y)
     }
 }
 
@@ -564,5 +566,28 @@ mod test {
             Some(Vector2 { x: 1.0, y: 0.0 }),
             Vector2::in_m(2.0, 0.0).unit_vector()
         );
+    }
+
+    #[test]
+    fn mixed_vector_ops() {
+        let a = Vector2 {
+            x: Length::in_m(1.0),
+            y: Duration::in_s(2.0),
+        };
+
+        let b = Vector2 {
+            x: Length::in_m(2.0),
+            y: Duration::in_s(4.0),
+        };
+
+        assert_eq!(b, a + a);
+        assert_eq!(b, a * 2.0);
+        assert_eq!(b, &2.0 * &a);
+
+        {
+            let mut a_mut = a;
+            a_mut += a;
+            assert_eq!(b, a_mut);
+        }
     }
 }
