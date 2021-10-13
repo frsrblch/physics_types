@@ -45,6 +45,7 @@ modules! {
     mass,
     mass_rate,
     pixel,
+    polar,
     population,
     position,
     power,
