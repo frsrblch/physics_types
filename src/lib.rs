@@ -5,7 +5,6 @@
     non_camel_case_types
 )]
 #![feature(
-    const_panic,
     const_float_classify,
     const_trait_impl,
     const_fn_floating_point_arithmetic
