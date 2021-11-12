@@ -1,6 +1,6 @@
 use crate::angle::Angle;
 use crate::vector::Vector2;
-use std::ops::{Div, DivAssign, Mul, MulAssign};
+use std::ops::{Add, Div, DivAssign, Mul, MulAssign, Sub};
 
 #[derive(Debug, Default, Copy, Clone, Eq, PartialEq, Ord, PartialOrd)]
 pub struct Polar<T> {
@@ -74,5 +74,27 @@ impl<T: Div<Rhs>, Rhs> Div<Rhs> for Polar<T> {
 impl<T: DivAssign<Rhs>, Rhs> DivAssign<Rhs> for Polar<T> {
     fn div_assign(&mut self, rhs: Rhs) {
         self.magnitude.div_assign(rhs);
+    }
+}
+
+impl<T: Add<U>, U> Add<Polar<U>> for Polar<T> {
+    type Output = Polar<T::Output>;
+
+    fn add(self, rhs: Polar<U>) -> Self::Output {
+        Polar {
+            magnitude: self.magnitude + rhs.magnitude,
+            angle: self.angle + rhs.angle,
+        }
+    }
+}
+
+impl<T: Sub<U>, U> Sub<Polar<U>> for Polar<T> {
+    type Output = Polar<T::Output>;
+
+    fn sub(self, rhs: Polar<U>) -> Self::Output {
+        Polar {
+            magnitude: self.magnitude - rhs.magnitude,
+            angle: self.angle - rhs.angle,
+        }
     }
 }
