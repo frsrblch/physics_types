@@ -12,6 +12,10 @@ impl Pressure {
     pub const fn in_kpa(kilopascals: f64) -> Self {
         Self::in_pa(kilopascals * 1e3)
     }
+
+    pub const fn in_atm(atmospheres: f64) -> Self {
+        Self::in_kpa(atmospheres * 101.325)
+    }
 }
 
 scalar_div!(Force | Area = Pressure);
