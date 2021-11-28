@@ -5,3 +5,9 @@ scalar! {
         fn in_k(kelvin) -> Self;
     }
 }
+
+impl Temperature {
+    pub const fn in_c(celsius: f64) -> Self {
+        Self::in_k(celsius + 273.15)
+    }
+}
