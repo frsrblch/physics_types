@@ -50,6 +50,7 @@ modules! {
     power,
     pressure,
     speed,
+    spherical,
     temperature,
     time,
     unit,
