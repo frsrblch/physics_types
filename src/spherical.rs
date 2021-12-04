@@ -1,4 +1,4 @@
-use crate::{Angle, Length, Vector3};
+use crate::{Angle, Vector3};
 use std::ops::Mul;
 
 #[derive(Debug, Default, Copy, Clone, Eq, PartialEq, Ord, PartialOrd)]
@@ -33,6 +33,7 @@ impl<T: Mul<f64, Output = T> + Copy> Spherical<T> {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::Length;
 
     #[test]
     #[allow(unused_variables)]
