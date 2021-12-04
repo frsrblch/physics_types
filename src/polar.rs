@@ -8,6 +8,14 @@ pub struct Polar<T> {
     pub angle: Angle,
 }
 
+impl<T> Polar<T> {
+    #[inline]
+    pub fn unit_vector(self) -> Vector2<f64> {
+        let (y, x) = self.angle.sin_cos();
+        Vector2 { x, y }
+    }
+}
+
 impl<T: Mul<f64, Output = T> + Copy> Polar<T> {
     #[inline]
     pub fn euclidean(self) -> Vector2<T> {
@@ -96,5 +104,25 @@ impl<T: Sub<U>, U> Sub<Polar<U>> for Polar<T> {
             magnitude: self.magnitude - rhs.magnitude,
             angle: self.angle - rhs.angle,
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn polar_to_unit_vector() {
+        let angle = Angle::PI / 6.0;
+
+        let polar = Polar {
+            magnitude: (),
+            angle,
+        };
+
+        let Vector2 { x, y } = polar.unit_vector();
+
+        assert_eq!(angle.cos(), x);
+        assert_eq!(angle.sin(), y);
     }
 }
