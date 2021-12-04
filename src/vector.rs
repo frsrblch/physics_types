@@ -375,12 +375,12 @@ where
     ///
     ///  # Arguments
     ///
-    /// * `angle` - as measured clockwise from the positive y-axis
+    /// * `angle` - as measured anticlockwise from the positive x-axis
     /// * `magnitude` - length of the resulting vector
     #[inline]
-    pub fn from_angle_and_magnitude(angle: super::Angle, magnitude: T) -> Self {
-        let x = magnitude * angle.sin();
-        let y = magnitude * angle.cos();
+    pub fn from_angle_and_magnitude(angle: crate::Angle, magnitude: T) -> Self {
+        let x = magnitude * angle.cos();
+        let y = magnitude * angle.sin();
         Self { x, y }
     }
 }
