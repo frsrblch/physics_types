@@ -1,4 +1,4 @@
-use crate::{Duration, Mass};
+use crate::{Area, Duration, Mass, New, Squared};
 
 pub const M: Length = Length::in_m(1.0);
 pub const KM: Length = Length::in_m(1e3);
@@ -14,13 +14,22 @@ scalar! {
     }
 }
 
+scalar! {
+    struct LengthInv(f64) {
+        fn in_m_inv(meters_inv) -> Self;
+    }
+}
+
+scalar_div!(Length | Area = LengthInv);
+scalar_div!(f64 | Length = LengthInv);
+
 impl Length {
     #[inline]
     pub fn of_orbit(mass: Mass, period: Duration) -> Self {
         use crate::constants::G;
         use std::f64::consts::TAU;
 
-        const G_OVER_TAU_SQUARED: f64 = G / (TAU * TAU);
+        const G_OVER_TAU_SQUARED: f64 = G / TAU.squared();
         const ONE_THIRD: f64 = 1.0 / 3.0;
 
         let meters_cubed = G_OVER_TAU_SQUARED * mass.value * period.value * period.value;

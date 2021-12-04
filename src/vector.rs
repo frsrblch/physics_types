@@ -255,6 +255,20 @@ macro_rules! vector {
             }
         }
 
+        impl<T> $v <T>
+        {
+            #[inline]
+            pub fn dot<U, V>(self, rhs: $v <U>) -> V
+            where
+                T: Mul<U, Output = V>,
+                V: Add<V, Output = V>,
+            {
+                sum! {
+                    $( self.$f * rhs.$f, )*
+                }
+            }
+        }
+
         impl<T, U> $v <T>
         where
             T: Mul<T, Output = U> + Copy,
