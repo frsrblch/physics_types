@@ -1,6 +1,10 @@
 use crate::time::Frequency;
 use crate::{Area, Duration, Energy, Force, Radius, Speed, Squared, Temperature};
 
+/// https://en.wikipedia.org/wiki/Stefan%E2%80%93Boltzmann_law
+/// Units: W / m2 / K4
+const SIGMA: f64 = 5.670374e-8;
+
 scalar! {
     struct Power(f64) {
         fn in_watts(watts) -> Self;
@@ -12,10 +16,6 @@ impl Power {
     /// Divide by the distance squared to determine the flux density
     /// https://en.wikipedia.org/wiki/Black-body_radiation
     pub fn blackbody(temp: Temperature, radius: Radius) -> Self {
-        /// https://en.wikipedia.org/wiki/Stefan%E2%80%93Boltzmann_law
-        /// Units: W / m2 / K4
-        const SIGMA: f64 = 5.670374e-8;
-
         let t_sqr = temp.value * temp.value;
         let t_qrt = t_sqr * t_sqr;
         let r_sqr = radius.value * radius.value;
@@ -38,6 +38,12 @@ scalar_div!(Power | Area = FluxDensity);
 impl FluxDensity {
     pub fn in_orbit(star_temp: Temperature, star_radius: Radius, orbit_radius: Radius) -> Self {
         Power::blackbody(star_temp, star_radius) / orbit_radius.squared()
+    }
+
+    pub fn blackbody(temp: Temperature) -> Self {
+        let t_sqr = temp.value * temp.value;
+        let t_qrt = t_sqr * t_sqr;
+        FluxDensity::in_w_per_m2(SIGMA * t_qrt)
     }
 }
 
