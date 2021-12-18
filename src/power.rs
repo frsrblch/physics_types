@@ -7,6 +7,22 @@ scalar! {
     }
 }
 
+impl Power {
+    /// Calculate power output of a black-body.
+    /// Divide by the distance squared to determine the flux density
+    /// https://en.wikipedia.org/wiki/Black-body_radiation
+    pub fn blackbody(temp: Temperature, radius: Radius) -> Self {
+        /// https://en.wikipedia.org/wiki/Stefan%E2%80%93Boltzmann_law
+        /// Units: W / m2 / K4
+        const SIGMA: f64 = 5.670374e-8;
+
+        let t_sqr = temp.value * temp.value;
+        let t_qrt = t_sqr * t_sqr;
+        let r_sqr = radius.value * radius.value;
+        Power::in_watts(t_qrt * r_sqr * SIGMA)
+    }
+}
+
 scalar_div!(Energy | Duration = Power);
 scalar_div!(Power | Frequency = Energy);
 scalar_div!(Power | Speed = Force);
@@ -20,15 +36,8 @@ scalar! {
 scalar_div!(Power | Area = FluxDensity);
 
 impl FluxDensity {
-    /// https://en.wikipedia.org/wiki/Black-body_radiation
     pub fn in_orbit(star_temp: Temperature, star_radius: Radius, orbit_radius: Radius) -> Self {
-        /// https://en.wikipedia.org/wiki/Stefan%E2%80%93Boltzmann_law
-        /// Units: W / m2 / K4
-        const σ: f64 = 5.670374e-8;
-        let t_sqr = star_temp.value * star_temp.value;
-        let t_qrt = t_sqr * t_sqr;
-        let r_sqr = star_radius.value * star_radius.value;
-        Power::in_watts(t_qrt * r_sqr * σ) / orbit_radius.squared()
+        Power::blackbody(star_temp, star_radius) / orbit_radius.squared()
     }
 }
 
@@ -46,7 +55,7 @@ mod test {
     #[test]
     fn flux_density_in_orbit() {
         use crate::{AU, K, KM};
-        let fd = FluxDensity::in_orbit(5772.0 * K, 695.7e3 * KM, 1.0 * AU);
+        let fd = FluxDensity::in_orbit(5772.0 * K, 695.7e3 * KM, AU);
         assert!((fd.value - 1361.16).abs() < 0.1);
     }
 }
