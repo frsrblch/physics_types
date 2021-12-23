@@ -66,7 +66,7 @@ impl Angle {
 impl Distribution<Angle> for Standard {
     #[inline]
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Angle {
-        Angle::in_rad(rng.gen_range(-PI, PI))
+        Angle::in_rad(rng.gen_range((-PI)..PI))
     }
 }
 
