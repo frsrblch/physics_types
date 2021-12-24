@@ -26,6 +26,11 @@ impl Area {
         const FOUR_PI: f64 = 4.0 * PI;
         FOUR_PI * radius.squared()
     }
+
+    #[inline]
+    pub fn of_circle(radius: Length) -> Self {
+        PI * radius.squared()
+    }
 }
 
 scalar_squared!(Length ^ 2 = Area);
