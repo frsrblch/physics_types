@@ -5,6 +5,7 @@ macro_rules! scalar_div {
     { $num:ty | $den:ty = $res:ty } => {
         impl const std::ops::Div<$den> for $num {
             type Output = $res;
+            #[inline]
             fn div(self, rhs: $den) -> Self::Output {
                 Self::Output::new(self.value() / rhs.value())
             }
@@ -12,6 +13,7 @@ macro_rules! scalar_div {
 
         impl const std::ops::Div<$den> for &$num {
             type Output = $res;
+            #[inline]
             fn div(self, rhs: $den) -> Self::Output {
                 Self::Output::new(self.value() / rhs.value())
             }
@@ -19,6 +21,7 @@ macro_rules! scalar_div {
 
         impl const std::ops::Div<&$den> for $num {
             type Output = $res;
+            #[inline]
             fn div(self, rhs: &$den) -> Self::Output {
                 Self::Output::new(self.value() / rhs.value())
             }
@@ -26,6 +29,7 @@ macro_rules! scalar_div {
 
         impl const std::ops::Div<&$den> for &$num {
             type Output = $res;
+            #[inline]
             fn div(self, rhs: &$den) -> Self::Output {
                 Self::Output::new(self.value() / rhs.value())
             }
@@ -33,6 +37,7 @@ macro_rules! scalar_div {
 
         impl const std::ops::Div<$res> for $num {
             type Output = $den;
+            #[inline]
             fn div(self, rhs: $res) -> Self::Output {
                 Self::Output::new(self.value() / rhs.value())
             }
@@ -40,6 +45,7 @@ macro_rules! scalar_div {
 
         impl const std::ops::Div<$res> for &$num {
             type Output = $den;
+            #[inline]
             fn div(self, rhs: $res) -> Self::Output {
                 Self::Output::new(self.value() / rhs.value())
             }
@@ -47,6 +53,7 @@ macro_rules! scalar_div {
 
         impl const std::ops::Div<&$res> for $num {
             type Output = $den;
+            #[inline]
             fn div(self, rhs: &$res) -> Self::Output {
                 Self::Output::new(self.value() / rhs.value())
             }
@@ -54,6 +61,7 @@ macro_rules! scalar_div {
 
         impl const std::ops::Div<&$res> for &$num {
             type Output = $den;
+            #[inline]
             fn div(self, rhs: &$res) -> Self::Output {
                 Self::Output::new(self.value() / rhs.value())
             }
@@ -61,6 +69,7 @@ macro_rules! scalar_div {
 
         impl const std::ops::Mul<$den> for $res {
             type Output = $num;
+            #[inline]
             fn mul(self, rhs: $den) -> Self::Output {
                 Self::Output::new(self.value() * rhs.value())
             }
@@ -68,6 +77,7 @@ macro_rules! scalar_div {
 
         impl const std::ops::Mul<$den> for &$res {
             type Output = $num;
+            #[inline]
             fn mul(self, rhs: $den) -> Self::Output {
                 Self::Output::new(self.value() * rhs.value())
             }
@@ -75,6 +85,7 @@ macro_rules! scalar_div {
 
         impl const std::ops::Mul<&$den> for $res {
             type Output = $num;
+            #[inline]
             fn mul(self, rhs: &$den) -> Self::Output {
                 Self::Output::new(self.value() * rhs.value())
             }
@@ -82,6 +93,7 @@ macro_rules! scalar_div {
 
         impl const std::ops::Mul<&$den> for &$res {
             type Output = $num;
+            #[inline]
             fn mul(self, rhs: &$den) -> Self::Output {
                 Self::Output::new(self.value() * rhs.value())
             }
@@ -89,6 +101,7 @@ macro_rules! scalar_div {
 
         impl const std::ops::Mul<$res> for $den {
             type Output = $num;
+            #[inline]
             fn mul(self, rhs: $res) -> Self::Output {
                 Self::Output::new(self.value() * rhs.value())
             }
@@ -96,6 +109,7 @@ macro_rules! scalar_div {
 
         impl const std::ops::Mul<$res> for &$den {
             type Output = $num;
+            #[inline]
             fn mul(self, rhs: $res) -> Self::Output {
                 Self::Output::new(self.value() * rhs.value())
             }
@@ -103,6 +117,7 @@ macro_rules! scalar_div {
 
         impl const std::ops::Mul<&$res> for $den {
             type Output = $num;
+            #[inline]
             fn mul(self, rhs: &$res) -> Self::Output {
                 Self::Output::new(self.value() * rhs.value())
             }
@@ -110,6 +125,7 @@ macro_rules! scalar_div {
 
         impl const std::ops::Mul<&$res> for &$den {
             type Output = $num;
+            #[inline]
             fn mul(self, rhs: &$res) -> Self::Output {
                 Self::Output::new(self.value() * rhs.value())
             }
