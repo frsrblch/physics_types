@@ -16,11 +16,14 @@ pub const YR: Duration = Duration::in_d(365.25);
 
 /// Elapsed game time in seconds.
 #[derive(Debug, Default, Copy, Clone, PartialEq)]
-pub struct TimeFloat {
+pub struct TimeIndex {
     pub value: Duration,
 }
 
-impl TimeFloat {
+#[deprecated]
+pub type TimeFloat = TimeIndex;
+
+impl TimeIndex {
     #[inline]
     pub fn in_s(seconds: f64) -> Self {
         Self::new(seconds)
@@ -39,7 +42,7 @@ impl TimeFloat {
     }
 }
 
-impl Div for TimeFloat {
+impl Div for TimeIndex {
     type Output = f64;
     #[inline]
     fn div(self, rhs: Self) -> f64 {
@@ -47,7 +50,7 @@ impl Div for TimeFloat {
     }
 }
 
-impl Add<Duration> for TimeFloat {
+impl Add<Duration> for TimeIndex {
     type Output = Self;
     #[inline]
     fn add(self, rhs: Duration) -> Self {
@@ -57,14 +60,14 @@ impl Add<Duration> for TimeFloat {
     }
 }
 
-impl AddAssign<Duration> for TimeFloat {
+impl AddAssign<Duration> for TimeIndex {
     #[inline]
     fn add_assign(&mut self, rhs: Duration) {
         self.value += rhs;
     }
 }
 
-impl Sub<Duration> for TimeFloat {
+impl Sub<Duration> for TimeIndex {
     type Output = Self;
     #[inline]
     fn sub(self, rhs: Duration) -> Self {
@@ -74,7 +77,7 @@ impl Sub<Duration> for TimeFloat {
     }
 }
 
-impl Sub for TimeFloat {
+impl Sub for TimeIndex {
     type Output = Duration;
     #[inline]
     fn sub(self, rhs: Self) -> Duration {
@@ -82,7 +85,7 @@ impl Sub for TimeFloat {
     }
 }
 
-impl Div<Duration> for TimeFloat {
+impl Div<Duration> for TimeIndex {
     type Output = f64;
     #[inline]
     fn div(self, rhs: Duration) -> Self::Output {
@@ -90,16 +93,16 @@ impl Div<Duration> for TimeFloat {
     }
 }
 
-impl Eq for TimeFloat {}
+impl Eq for TimeIndex {}
 
-impl PartialOrd for TimeFloat {
+impl PartialOrd for TimeIndex {
     #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         self.value.partial_cmp(&other.value)
     }
 }
 
-impl Ord for TimeFloat {
+impl Ord for TimeIndex {
     #[inline]
     fn cmp(&self, other: &Self) -> Ordering {
         self.value.partial_cmp(&other.value).unwrap()
