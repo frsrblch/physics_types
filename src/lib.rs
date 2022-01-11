@@ -151,3 +151,8 @@ pub trait Scalar3: Sized {
     type Vector;
     fn vector3(x: Self, y: Self, z: Self) -> Self::Vector;
 }
+
+pub trait Dot<Rhs = Self> {
+    type Output;
+    fn dot(self, rhs: Rhs) -> Self::Output;
+}

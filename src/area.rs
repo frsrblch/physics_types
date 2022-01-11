@@ -42,7 +42,7 @@ scalar_div!(f64 | Area = AreaInv);
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::{Angle, Polar, Vector2};
+    use crate::{Angle, Dot, Polar, Vector2};
 
     #[test]
     fn radius_to_area_inv() {

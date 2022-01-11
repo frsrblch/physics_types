@@ -1,4 +1,4 @@
-use crate::{New, Sqrt};
+use crate::{Dot, New, Sqrt};
 use std::ops::*;
 
 macro_rules! sum {
@@ -260,14 +260,14 @@ macro_rules! vector {
             }
         }
 
-        impl<T> $v <T>
-        {
-            #[inline]
-            pub fn dot<U, V>(self, rhs: $v <U>) -> V
-            where
+        impl<T, U, V> crate::Dot<$v<U>> for $v <T>
+        where
                 T: Mul<U, Output = V>,
                 V: Add<V, Output = V>,
-            {
+        {
+            type Output = V;
+            #[inline]
+            fn dot(self, rhs: $v<U>) -> V {
                 sum! {
                     $( self.$f * rhs.$f, )*
                 }
@@ -373,6 +373,30 @@ impl<T> Vector3<T> {
             x: self.x,
             y: self.y,
         }
+    }
+}
+
+impl<T, U, V> Dot<Vector2<U>> for Vector3<T>
+where
+    T: Mul<U, Output = V>,
+    V: Add<V, Output = V>,
+{
+    type Output = V;
+
+    fn dot(self, rhs: Vector2<U>) -> Self::Output {
+        self.x * rhs.x + self.y * rhs.y
+    }
+}
+
+impl<T, U, V> Dot<Vector3<U>> for Vector2<T>
+where
+    T: Mul<U, Output = V>,
+    V: Add<V, Output = V>,
+{
+    type Output = V;
+
+    fn dot(self, rhs: Vector3<U>) -> Self::Output {
+        self.x * rhs.x + self.y * rhs.y
     }
 }
 
