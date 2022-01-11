@@ -99,6 +99,8 @@ macro_rules! scalar {
             }
         }
 
+        // TODO this $scalar::cmp isn't quite right
+        // https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/
         impl Ord for $scalar {
             #[inline]
             fn cmp(&self, other: &Self) -> std::cmp::Ordering {
